@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FK Sniper Ops Console - Corporate Portal</title>
+    
+    <!-- Google Fonts & Tailwind CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Utility Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        fk: {
+                            blue: '#2874f0',
+                            darkBlue: '#1053c8',
+                            yellow: '#ffe11b',
+                            lightYellow: '#fdf3b8',
+                            bg: '#f1f3f6',
+                            textDark: '#212121',
+                            textLight: '#878787',
+                            border: '#dbdbdb'
+                        }
+                    },
+                    boxShadow: {
+                        fkShadow: '0 2px 4px 0 rgba(0,0,0,.08)',
+                        fkHover: '0 4px 16px 0 rgba(0,0,0,.12)'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #f1f3f6;
+            color: #212121;
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f3f6;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c2c2c2;
+            border-radius: 99px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #2874f0;
+        }
+
+        .fk-panel {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .fk-panel:hover {
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+        }
+
+        .resource-card {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .resource-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .modal-overlay {
+            backdrop-filter: blur(4px);
+            transition: opacity 0.25s ease;
+        }
+
+        /* Dynamic Theme Palette Rules */
+        .theme-accent-blue { --accent-color: #2874f0; --accent-hover: #1053c8; }
+        .theme-accent-slate { --accent-color: #334155; --accent-hover: #1e293b; }
+        .theme-accent-emerald { --accent-color: #059669; --accent-hover: #047857; }
+        .theme-accent-rose { --accent-color: #e11d48; --accent-hover: #be123c; }
+    </style>
+</head>
+<body class="text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-fk-yellow selection:text-black theme-accent-blue">
+
+    <header id="main-header" class="bg-fk-blue text-white shadow-fkShadow sticky top-0 z-40 px-4 py-3 transition-colors duration-300">
+        <div class="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <!-- Logo & Title -->
+            <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-10 h-10 rounded bg-white text-fk-blue font-black text-xl italic shadow-sm select-none" id="logo-icon">
+                    FK
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-lg font-extrabold tracking-wide italic flex items-center gap-1.5">
+                            flipkart <span class="text-fk-yellow not-italic font-medium text-xs bg-fk-darkBlue px-1.5 py-0.5 rounded ml-1" id="sub-logo-tag">SNIPER OPS</span>
+                        </h1>
+                        <span class="text-[9px] font-bold font-mono bg-white/10 text-white px-2 py-0.5 rounded border border-white/20">V4.5</span>
+                    </div>
+                    <p class="text-[10px] text-white/80 font-mono flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> SYSTEM SECURE GATEWAY [LOCAL ACTIVE]
+                    </p>
+                </div>
+            </div>
+
+            <!-- Layout Actions & Gateway Legends -->
+            <div class="flex flex-wrap items-center gap-3">
+                <!-- Share Console Cloud Action -->
+                <button onclick="shareWorkspaceCloud()" class="px-3.5 py-1.5 bg-fk-yellow text-slate-900 hover:bg-white border border-transparent rounded-lg text-xs font-extrabold flex items-center gap-2 transition-all shadow-md">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> SHARE CONSOLE
+                </button>
+
+                <!-- Layout customizer settings trigger -->
+                <button onclick="openLayoutModal()" class="px-3 py-1.5 bg-white/15 hover:bg-white/25 border border-white/25 rounded-lg text-xs font-semibold flex items-center gap-2 font-mono transition-all">
+                    <i class="fa-solid fa-sliders"></i> EDIT LAYOUT
+                </button>
+
+                <!-- Gateway Access Legend in Header -->
+                <div class="flex items-center gap-2 bg-white/10 border border-white/20 rounded-lg px-3 py-1.5 text-xs font-mono">
+                    <div class="flex items-center gap-1 border-r border-white/25 pr-3">
+                        <span class="px-1.5 py-0.5 bg-rose-600 text-white text-[9px] font-bold rounded">VPN</span>
+                        <span class="text-white/90 text-[11px] font-sans ml-1">VPN Internal</span>
+                    </div>
+                    <div class="flex items-center gap-1 pl-1">
+                        <span class="px-1.5 py-0.5 bg-emerald-600 text-white text-[9px] font-bold rounded">PUB</span>
+                        <span class="text-white/90 text-[11px] font-sans ml-1">Public Web</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+    <!-- Consolidated Search Console Row below Header -->
+    <div class="w-full max-w-[1600px] mx-auto p-4 sm:p-6 pb-0">
+        <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-2">
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider flex justify-between px-1">
+                <span>🔍 Search Console Resources</span>
+                <span class="text-slate-400 text-[10px] normal-case font-normal font-mono">Press <kbd class="px-1 py-0.5 bg-slate-100 rounded border border-slate-300 font-bold">/</kbd> outside text to focus</span>
+            </label>
+            <div class="relative group flex shadow-sm rounded-lg overflow-hidden">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                    <i class="fa-solid fa-search text-slate-400"></i>
+                </div>
+                <input type="text" id="global-search" oninput="handleSearch()" placeholder="Search tools, forms, process names, keyword descriptors..." 
+                    class="w-full bg-slate-50 border border-slate-300 focus:border-fk-blue focus:bg-white rounded-l-lg pl-10 pr-12 py-3 text-sm text-slate-800 placeholder-slate-400 tracking-wide font-mono transition-all outline-none">
+                
+                <button onclick="clearSearch()" id="clear-search-btn" class="hidden absolute right-[100px] top-3 text-slate-400 hover:text-slate-600 transition-colors p-1 bg-white/50 rounded">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+
+                <div id="search-action-btn" class="bg-fk-blue text-white px-6 flex items-center justify-center font-bold text-xs border border-y-fk-blue border-r-fk-blue cursor-pointer select-none font-mono hover:bg-fk-darkBlue transition-colors">
+                    SEARCH
+                </div>
+            </div>
+
+            <!-- Quick Keyword Suggestions below Search Bar -->
+            <div class="flex flex-wrap items-center gap-2 pt-2 text-xs text-slate-600 font-mono px-1">
+                <span class="text-slate-400 font-medium text-[11px]">Quick keywords:</span>
+                <button onclick="applySearchQuery('it breakdown')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-slate-300 rounded text-[11px] text-fk-blue font-medium transition-all">#IT Breakdown</button>
+                <button onclick="applySearchQuery('briefing')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-slate-300 rounded text-[11px] text-fk-blue font-medium transition-all">#Briefings</button>
+                <button onclick="applySearchQuery('black')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-slate-300 rounded text-[11px] text-fk-blue font-medium transition-all">#FK Black</button>
+                <button onclick="applySearchQuery('accops')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-slate-300 rounded text-[11px] text-fk-blue font-medium transition-all">#Accops VPN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <main class="flex-grow max-w-[1600px] w-full mx-auto p-4 sm:p-6 pt-4">
+        <div id="main-grid-layout" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- SIDEBAR COLUMN: Left navigation / categories -->
+            <aside id="sidebar-panel" class="lg:col-span-3 xl:col-span-3 space-y-4">
+                
+                <!-- Category Navigation list -->
+                <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between px-1">
+                        <h3 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Category Navigation</h3>
+                        <button onclick="openAddModal()" class="text-[10px] bg-fk-blue hover:bg-fk-darkBlue text-white font-bold px-2 py-1 rounded transition-colors flex items-center gap-1 shadow-sm" id="sidebar-add-btn">
+                            <i class="fa-solid fa-plus text-[8px]"></i> Add Link
+                        </button>
+                    </div>
+                    <nav class="flex flex-col gap-1.5" id="category-nav">
+                        <!-- Loaded dynamically -->
+                    </nav>
+                </div>
+
+                <!-- Sync Manual Code Backup Panel -->
+                <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-2">
+                    <h3 class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider">Manual Workspace Import</h3>
+                    <p class="text-[10px] text-slate-500 leading-relaxed">Paste a generated Workspace Sync Code here to instantly load custom settings offline:</p>
+                    <div class="flex gap-1.5">
+                        <input type="text" id="manual-import-code" placeholder="Paste code..." class="w-full bg-slate-50 border border-slate-200 focus:bg-white rounded px-2 py-1 text-xs outline-none font-mono">
+                        <button onclick="importBackupCode()" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-900 text-white font-bold text-[10px] rounded transition-colors shrink-0">IMPORT</button>
+                    </div>
+                </div>
+
+            </aside>
+
+            <!-- LINKS LIST COLUMN: Right content grid -->
+            <section id="content-panel" class="lg:col-span-9 xl:col-span-9 space-y-4">
+                
+                <!-- Dynamic status header -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-sm">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-sm font-extrabold text-slate-800" id="current-category-label">All Resources</h2>
+                            <span id="total-count-badge" class="px-2.5 py-0.5 text-xs font-mono font-bold bg-slate-100 text-slate-700 rounded-full border border-slate-200">0</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 font-mono mt-0.5" id="current-category-desc">Viewing all mapped Flipkart portals, trackers and sheets.</p>
+                    </div>
+                    
+                    <!-- Network Filter & Sort Dropdown -->
+                    <div class="flex flex-wrap items-center gap-2.5">
+                        <div class="flex bg-slate-100 border border-slate-200 p-0.5 rounded text-xs font-mono">
+                            <button onclick="setNetworkFilter('all')" id="net-btn-all" class="px-2 py-1 rounded text-slate-700 font-bold transition-all bg-white border border-slate-200 shadow-sm">ALL NET</button>
+                            <button onclick="setNetworkFilter('internal')" id="net-btn-internal" class="px-2 py-1 rounded text-slate-500 hover:text-slate-800 transition-all font-semibold flex items-center gap-1"><i class="fa-solid fa-lock text-[8px]"></i> VPN</button>
+                            <button onclick="setNetworkFilter('external')" id="net-btn-external" class="px-2 py-1 rounded text-slate-500 hover:text-slate-800 transition-all font-semibold flex items-center gap-1"><i class="fa-solid fa-globe text-[8px]"></i> PUB</button>
+                        </div>
+
+                        <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2 py-1 rounded text-xs font-mono">
+                            <span class="text-slate-400">Sort:</span>
+                            <select id="sort-selector" onchange="renderResourceCards()" class="bg-transparent text-slate-700 border-none outline-none cursor-pointer text-xs pr-1 font-bold">
+                                <option value="name">Alphabetical</option>
+                                <option value="favorites">Bookmarks First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Empty state block when searches produce 0 results -->
+                <div id="empty-state" class="hidden flex-col items-center justify-center p-12 bg-white border border-slate-200 rounded-xl text-center space-y-3 shadow-sm">
+                    <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 border border-slate-200">
+                        <i class="fa-solid fa-magnifying-glass text-xl"></i>
+                    </div>
+                    <div class="space-y-1">
+                        <h4 class="text-xs font-bold text-slate-700">No matching resources found</h4>
+                        <p class="text-[11px] text-slate-400 max-w-sm mx-auto">Try typing a simplified target name, keyword, or clear your filters entirely.</p>
+                    </div>
+                    <button onclick="resetAllFilters()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded text-xs font-mono font-medium transition-all" id="empty-state-reset-btn">
+                        Reset All Filters [Esc]
+                    </button>
+                </div>
+
+                <!-- Resource Link Cards Grid Layout -->
+                <div id="resource-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                    <!-- Cards Loaded Dynamically -->
+                </div>
+
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Edit Layout Dialog Modal -->
+    <div id="layout-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 opacity-0 pointer-events-none modal-overlay">
+        <div class="bg-white w-full max-w-md mx-4 rounded-xl border border-slate-200 shadow-2xl p-6 relative flex flex-col max-h-[90vh] overflow-y-auto">
+            <button onclick="closeLayoutModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 transition-colors p-1">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="flex items-center gap-2 mb-5">
+                <div class="w-8 h-8 rounded-lg bg-fk-blue/10 text-fk-blue flex items-center justify-center" id="layout-icon-bg">
+                    <i class="fa-solid fa-sliders"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-800 text-base">Edit Workspace Layout</h3>
+                    <p class="text-[10px] text-slate-400 font-mono">Tweak density, columns, theme accent colors, and placements</p>
+                </div>
+            </div>
+
+            <div class="space-y-5">
+                <!-- Theme Accent Selection -->
+                <div class="space-y-2">
+                    <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wide">Theme Accent Style</label>
+                    <div class="grid grid-cols-4 gap-2">
+                        <button onclick="setLayoutSetting('accent', 'blue')" id="accent-btn-blue" class="py-2 px-1 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1 transition-all bg-slate-50 hover:bg-slate-100">
+                            <span class="w-4 h-4 rounded-full bg-[#2874f0]"></span>
+                            <span>FK Blue</span>
+                        </button>
+                        <button onclick="setLayoutSetting('accent', 'slate')" id="accent-btn-slate" class="py-2 px-1 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1 transition-all bg-slate-50 hover:bg-slate-100">
+                            <span class="w-4 h-4 rounded-full bg-[#334155]"></span>
+                            <span>Slate Dark</span>
+                        </button>
+                        <button onclick="setLayoutSetting('accent', 'emerald')" id="accent-btn-emerald" class="py-2 px-1 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1 transition-all bg-slate-50 hover:bg-slate-100">
+                            <span class="w-4 h-4 rounded-full bg-[#059669]"></span>
+                            <span>Emerald</span>
+                        </button>
+                        <button onclick="setLayoutSetting('accent', 'rose')" id="accent-btn-rose" class="py-2 px-1 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1 transition-all bg-slate-50 hover:bg-slate-100">
+                            <span class="w-4 h-4 rounded-full bg-[#e11d48]"></span>
+                            <span>Rose red</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Grid Columns Selection -->
+                <div class="space-y-2">
+                    <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wide">Card Columns Count</label>
+                    <div class="grid grid-cols-3 gap-2 bg-slate-50 border p-1 rounded-lg font-mono">
+                        <button onclick="setLayoutSetting('columns', '2')" id="col-btn-2" class="py-1.5 rounded-md text-xs font-bold transition-all text-slate-600">2 Cols</button>
+                        <button onclick="setLayoutSetting('columns', '3')" id="col-btn-3" class="py-1.5 rounded-md text-xs font-bold transition-all text-slate-600">3 Cols</button>
+                        <button onclick="setLayoutSetting('columns', '4')" id="col-btn-4" class="py-1.5 rounded-md text-xs font-bold transition-all text-slate-600">4 Cols</button>
+                    </div>
+                </div>
+
+                <!-- Card Density Configurations -->
+                <div class="space-y-2">
+                    <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wide">Card Visual Density</label>
+                    <div class="grid grid-cols-2 gap-2 bg-slate-50 border p-1 rounded-lg font-mono">
+                        <button onclick="setLayoutSetting('density', 'comfortable')" id="density-btn-comfortable" class="py-1.5 rounded-md text-xs font-bold transition-all text-slate-600 flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-list-check text-[10px]"></i> Comfortable
+                        </button>
+                        <button onclick="setLayoutSetting('density', 'compact')" id="density-btn-compact" class="py-1.5 rounded-md text-xs font-bold transition-all text-slate-600 flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-compress text-[10px]"></i> Super Compact
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sidebar Orientation Settings -->
+                <div class="space-y-2">
+                    <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wide">Sidebar Placement</label>
+                    <div class="grid grid-cols-2 gap-2 bg-slate-50 border p-1 rounded-lg font-mono">
+                        <button onclick="setLayoutSetting('sidebarPos', 'left')" id="sidebar-btn-left" class="py-1.5 rounded-md text-xs font-bold transition-all text-slate-600">Left Panel</button>
+                        <button onclick="setLayoutSetting('sidebarPos', 'right')" id="sidebar-btn-right" class="py-1.5 rounded-md text-xs font-bold transition-all text-slate-600">Right Panel</button>
+                    </div>
+                </div>
+
+                <!-- Toggle Card Parameters -->
+                <div class="space-y-2">
+                    <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wide">Visual Elements Toggle</label>
+                    <div class="flex flex-col gap-2 bg-slate-50 border p-3 rounded-lg text-xs">
+                        <label class="flex items-center justify-between cursor-pointer">
+                            <span class="font-medium text-slate-700">Display Description Texts</span>
+                            <input type="checkbox" id="layout-toggle-desc" onchange="setLayoutSetting('showDesc', this.checked)" class="w-4 h-4 text-fk-blue focus:ring-fk-blue rounded">
+                        </label>
+                        <label class="flex items-center justify-between cursor-pointer pt-2 border-t border-slate-200">
+                            <span class="font-medium text-slate-700">Display Keyword Search Tags</span>
+                            <input type="checkbox" id="layout-toggle-tags" onchange="setLayoutSetting('showTags', this.checked)" class="w-4 h-4 text-fk-blue focus:ring-fk-blue rounded">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex gap-2 justify-end pt-5 mt-4 border-t border-slate-100">
+                <button onclick="resetLayoutDefault()" class="px-3.5 py-2 text-rose-600 hover:bg-rose-50 rounded-lg text-xs font-mono font-bold transition-colors">
+                    Reset Layout Defaults
+                </button>
+                <button onclick="closeLayoutModal()" class="px-4 py-2 bg-fk-blue hover:bg-fk-darkBlue text-white rounded-lg text-xs font-semibold shadow-md transition-all" id="layout-close-action-btn">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unified Add / Edit Link Modal -->
+    <div id="add-link-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 opacity-0 pointer-events-none modal-overlay">
+        <div class="bg-white w-full max-w-md mx-4 rounded-xl border border-slate-200 shadow-2xl p-6 relative flex flex-col max-h-[90vh] overflow-y-auto">
+            <button onclick="closeAddModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 transition-colors p-1">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="flex items-center gap-2 mb-4">
+                <div class="w-8 h-8 rounded-lg bg-fk-blue/10 flex items-center justify-center text-fk-blue" id="modal-icon-bg">
+                    <i class="fa-solid fa-link"></i>
+                </div>
+                <div>
+                    <h3 id="modal-header-title" class="font-bold text-slate-800 text-base">Add Custom Resource</h3>
+                    <p id="modal-header-desc" class="text-[10px] text-slate-400 font-mono">Create custom console mappings</p>
+                </div>
+            </div>
+
+            <form id="add-link-form" onsubmit="saveCustomLink(event)" class="space-y-4">
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wide">Resource Title</label>
+                    <input type="text" id="add-title" required placeholder="e.g. EKart Local Dispatch Log" 
+                        class="w-full bg-slate-50 border border-slate-300 focus:border-fk-blue focus:bg-white rounded-lg px-3 py-2 text-xs text-slate-800 placeholder-slate-400 outline-none transition-all">
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wide">Target URL</label>
+                    <input type="url" id="add-url" required placeholder="https://docs.google.com/..." 
+                        class="w-full bg-slate-50 border border-slate-300 focus:border-fk-blue focus:bg-white rounded-lg px-3 py-2 text-xs text-slate-800 placeholder-slate-400 outline-none transition-all">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wide">Category</label>
+                        <select id="add-category" class="w-full bg-slate-50 border border-slate-300 focus:border-fk-blue focus:bg-white rounded-lg px-3 py-2 text-xs text-slate-800 outline-none cursor-pointer transition-all">
+                            <option value="forms">Forms & Trackers</option>
+                            <option value="sheets">Sheets & Data</option>
+                            <option value="tools">Internal Tools</option>
+                            <option value="automation">Scripts & Macros</option>
+                            <option value="guides">Guides & Docs</option>
+                        </select>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wide">Network Mode</label>
+                        <select id="add-network" class="w-full bg-slate-50 border border-slate-300 focus:border-fk-blue focus:bg-white rounded-lg px-3 py-2 text-xs text-slate-800 outline-none cursor-pointer transition-all">
+                            <option value="pub">Public Access (PUB)</option>
+                            <option value="vpn">VPN Connected (Internal)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wide">Brief Description</label>
+                    <textarea id="add-desc" rows="2" placeholder="Describe the utility of this link..." 
+                        class="w-full bg-slate-50 border border-slate-300 focus:border-fk-blue focus:bg-white rounded-lg px-3 py-2 text-xs text-slate-800 placeholder-slate-400 outline-none transition-all resize-none"></textarea>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-[11px] font-extrabold text-slate-500 uppercase tracking-wide">Search Tags (Comma separated)</label>
+                    <input type="text" id="add-tags" placeholder="ekart, logs, tracking" 
+                        class="w-full bg-slate-50 border border-slate-300 focus:border-fk-blue focus:bg-white rounded-lg px-3 py-2 text-xs text-slate-800 placeholder-slate-400 outline-none transition-all">
+                </div>
+
+                <div class="flex gap-2.5 justify-end pt-2">
+                    <button type="button" onclick="closeAddModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 rounded-lg text-xs font-semibold transition-all">
+                        Cancel
+                    </button>
+                    <button type="submit" id="modal-submit-btn" class="px-4 py-2 bg-fk-blue hover:bg-fk-darkBlue text-white rounded-lg text-xs font-semibold shadow-md transition-all">
+                        Save Resource
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirm Delete Modal -->
+    <div id="delete-confirm-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 opacity-0 pointer-events-none modal-overlay">
+        <div class="bg-white w-full max-w-sm mx-4 rounded-xl border border-slate-200 shadow-2xl p-5 relative">
+            <h3 class="font-bold text-slate-800 text-base mb-1.5 flex items-center gap-2">
+                <i class="fa-solid fa-triangle-exclamation text-rose-500"></i> Delete Resource?
+            </h3>
+            <p id="delete-confirm-text" class="text-xs text-slate-500 leading-relaxed mb-4">
+                Are you sure you want to permanently remove this link mapping? This cannot be undone.
+            </p>
+            <div class="flex gap-2.5 justify-end">
+                <button onclick="closeDeleteModal()" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 rounded-lg text-xs font-semibold transition-all">
+                    Keep It
+                </button>
+                <button id="confirm-delete-btn" class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-semibold transition-all">
+                    Permanently Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cloud Sharing Confirmation Modal -->
+    <div id="share-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 opacity-0 pointer-events-none modal-overlay">
+        <div class="bg-white w-full max-w-lg mx-4 rounded-xl border border-slate-200 shadow-2xl p-6 relative flex flex-col">
+            <button onclick="closeShareModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 transition-colors p-1">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="flex items-center gap-2 mb-4">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-800 text-base">Workspace Shared Successfully!</h3>
+                    <p class="text-[10px] text-slate-400 font-mono">Direct Share Link (Sanitized & Safe for secure environments)</p>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 border rounded-lg p-3 space-y-3 mb-4">
+                <p class="text-xs text-slate-600">This URL is sanitized against browser double-domain glitches. Anyone with this unique link can load and navigate your exact console:</p>
+                
+                <div class="flex items-center gap-2 bg-white border rounded p-1.5 shadow-inner">
+                    <input type="text" id="share-link-input" readonly class="w-full bg-transparent text-xs text-slate-700 font-mono focus:outline-none px-2 select-all">
+                    <button onclick="copyGeneratedShareLink()" class="px-3 py-1 bg-slate-900 text-white hover:bg-slate-800 rounded text-[11px] font-bold shrink-0 transition-colors">
+                        Copy Link
+                    </button>
+                </div>
+
+                <div class="border-t border-slate-200 pt-3">
+                    <p class="text-[11px] font-bold text-slate-700 mb-1">Backup Sync Code (Highly Recommended):</p>
+                    <p class="text-[10px] text-slate-500 mb-1.5">If the URL structure is ever restricted or blocked by secure firewalls, copy this backup string and share it directly:</p>
+                    <div class="flex items-center gap-1.5">
+                        <input type="text" id="share-backup-code" readonly class="w-full bg-white border p-1 rounded text-[10px] font-mono text-slate-600 outline-none">
+                        <button onclick="copyGeneratedBackupCode()" class="px-2 py-1 bg-slate-700 hover:bg-slate-800 text-white text-[10px] font-bold rounded">Copy Code</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end border-t border-slate-100 pt-4">
+                <button onclick="closeShareModal()" class="px-4 py-2 bg-fk-blue hover:bg-fk-darkBlue text-white rounded-lg text-xs font-semibold shadow-md transition-all">
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Footer -->
+    <footer class="mt-auto border-t border-slate-200 bg-white py-4 text-center text-[11px] text-slate-400">
+        <div class="max-w-[1600px] mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <p>© 2026 Flipkart Sniper Ops Console. Customizable Support Hub.</p>
+            <div class="flex gap-4 font-mono text-[10px]">
+                <span class="text-rose-500 font-bold uppercase"><i class="fa-solid fa-shield"></i> INTERNAL CONFIDENTIAL USE ONLY</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Helper function to sanitize any proxy/sandboxed duplicated URLs -->
+    <script>
+        function getCleanCurrentUrl() {
+            let url = window.location.href;
+            
+            // Remove existing query parameters
+            const queryIndex = url.indexOf('?');
+            if (queryIndex !== -1) {
+                url = url.substring(0, queryIndex);
+            }
+            // Remove anchor hashes
+            const hashIndex = url.indexOf('#');
+            if (hashIndex !== -1) {
+                url = url.substring(0, hashIndex);
+            }
+            
+            // Fix double domain prefixing anomalies created by iframe proxy layers
+            // Matches instances like: domain.googhttps//domain.goog/... and strips the duplicate
+            const doubleProtocolPattern = /https?:\/\/[^\s/]+https?:\/\//i;
+            if (doubleProtocolPattern.test(url)) {
+                // Find index of the second protocol instance
+                const secondProtoIdx = url.indexOf('://', 8);
+                if (secondProtoIdx !== -1) {
+                    const protocolPart = url.substring(0, 5).includes('s') ? 'https://' : 'http://';
+                    // Re-route clean segment after the nested protocol
+                    const nestedPart = url.substring(secondProtoIdx + 3);
+                    const slashIdx = nestedPart.indexOf('/');
+                    if (slashIdx !== -1) {
+                        url = protocolPart + nestedPart.substring(slashIdx + 1);
+                    } else {
+                        url = protocolPart + nestedPart;
+                    }
+                }
+            }
+
+            // Cleanup specific glue-word duplication bugs
+            url = url.replace(/\.googhttps\/\//g, '.goog/');
+            url = url.replace(/\.googhttps:\/\//g, '.goog/');
+            url = url.replace(/\.googhttps/g, '.goog');
+            
+            return url;
+        }
+
+        // Base64 encoding tools for fail-safe data serialization
+        function encodeWorkspaceState(stateObj) {
+            const compactObj = {
+                r: stateObj.resources,
+                l: stateObj.layout,
+                f: stateObj.favorites
+            };
+            return btoa(unescape(encodeURIComponent(JSON.stringify(compactObj))));
+        }
+
+        function decodeWorkspaceState(base64Str) {
+            try {
+                const decodedJson = decodeURIComponent(escape(atob(base64Str)));
+                const data = JSON.parse(decodedJson);
+                return {
+                    resources: data.r || [],
+                    layout: data.l || {},
+                    favorites: data.f || []
+                };
+            } catch (e) {
+                console.error("Failed to decode base64 sync token:", e);
+                return null;
+            }
+        }
+    </script>
+
+    <!-- Firebase Core and Firestore Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global variables provided by environment (or fallbacks)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'fk-sniper-ops-app';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const authToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let db = null;
+        let auth = null;
+
+        // Initialize Firebase and Authenticate
+        async function initFirebaseConnection() {
+            if (!firebaseConfig) {
+                console.warn("No Firebase configuration available. Running in offline/localStorage mode.");
+                return false;
+            }
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                if (authToken) {
+                    await signInWithCustomToken(auth, authToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+                console.log("Firebase initialized successfully. User authenticated:", auth.currentUser?.uid);
+                return true;
+            } catch (error) {
+                console.error("Firebase Auth or Connection Error:", error);
+                return false;
+            }
+        }
+
+        // Export sharing functions to window scope so they can be triggered from buttons
+        window.shareWorkspaceCloud = async function() {
+            showToast("Saving workspace configurations...");
+            
+            let databaseSaved = false;
+            let uniqueWorkspaceId = 'ws-' + crypto.randomUUID();
+            
+            // Try connecting to Cloud Firestore DB
+            const isConnected = await initFirebaseConnection();
+            if (isConnected && db) {
+                const documentPath = doc(db, 'artifacts', appId, 'public', 'data', 'workspaces', uniqueWorkspaceId);
+
+                const payload = {
+                    resources: state.resources,
+                    layout: state.layout,
+                    favorites: state.favorites,
+                    created_at: new Date().toISOString(),
+                    user_id: auth.currentUser?.uid || 'anonymous'
+                };
+
+                try {
+                    await setDoc(documentPath, payload);
+                    databaseSaved = true;
+                } catch (error) {
+                    console.warn("Database save failed. Falling back to base64 parameters.", error);
+                }
+            }
+
+            // Retrieve the reliable, sanitized base URL to avoid proxy duplicates
+            const cleanBaseUrl = getCleanCurrentUrl();
+            
+            let shareUrl = '';
+            if (databaseSaved) {
+                shareUrl = cleanBaseUrl + '?workspaceId=' + uniqueWorkspaceId;
+            } else {
+                // Fail-safe offline backup: Encode exact data structure inside parameter
+                const b64Token = encodeWorkspaceState(state);
+                shareUrl = cleanBaseUrl + '?sync=' + b64Token;
+            }
+
+            // Generate portable raw backup code
+            const rawToken = encodeWorkspaceState(state);
+            document.getElementById('share-backup-code').value = rawToken;
+            document.getElementById('share-link-input').value = shareUrl;
+
+            // Direct Clipboard Copy
+            const temp = document.createElement('textarea');
+            temp.value = shareUrl;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+
+            // Show confirmation modal
+            const modal = document.getElementById('share-modal');
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.classList.add('opacity-100');
+            
+            showToast("Workspace link prepared and copied to clipboard!");
+        };
+
+        // Load shared workspace from database or URL param
+        async function checkAndLoadSharedWorkspace() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sharedId = urlParams.get('workspaceId');
+            const syncToken = urlParams.get('sync');
+
+            // Scenario 1: Base64 direct sync fallback
+            if (syncToken) {
+                showToast("Decoding URL workspace parameters...");
+                const importedData = decodeWorkspaceState(syncToken);
+                if (importedData) {
+                    applyImportedState(importedData);
+                    showToast("Successfully loaded shared workspace offline!");
+                }
+                return;
+            }
+
+            // Scenario 2: Cloud Firestore save lookup
+            if (!sharedId) return;
+
+            showToast("Syncing shared workspace from cloud...");
+            const isConnected = await initFirebaseConnection();
+            if (!isConnected || !db) {
+                showToast("Cannot connect to cloud. Try manual import code.");
+                return;
+            }
+
+            const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'workspaces', sharedId);
+            try {
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    applyImportedState(data);
+                    showToast("Loaded shared workspace successfully!");
+                } else {
+                    showToast("Shared workspace metadata has expired.");
+                }
+            } catch (error) {
+                console.error("Error retrieving shared document:", error);
+                showToast("Failed to fetch cloud workspace.");
+            }
+        }
+
+        function applyImportedState(data) {
+            if (data.resources) state.resources = data.resources;
+            if (data.layout) state.layout = { ...defaultLayout, ...data.layout };
+            if (data.favorites) state.favorites = data.favorites;
+
+            saveResourcesToStorage();
+            saveLayoutSettings();
+
+            // Refresh DOM Elements
+            applyLayoutClasses();
+            renderCategoryMenu();
+            renderResourceCards();
+        }
+
+        // Sync system loader hook
+        window.addEventListener('load', () => {
+            checkAndLoadSharedWorkspace();
+        });
+    </script>
+
+    <script>
+        // Mapped Flipkart Support Resources dataset
+        const baseResources = [
+            // Category: Forms & Trackers
+            {
+                id: "form-feedback",
+                title: "Agent Feedback Tracking Sheet",
+                url: "https://docs.google.com/spreadsheets/d/1JkXUMCmkfD1CYXaonwXFJS7V2evCYvUBNRgum8REYV0/edit?gid=540604563#gid=540604563",
+                category: "forms",
+                desc: "Active spreadsheet logging operational user feedbacks, issues, and customer complaints.",
+                internal: false,
+                tags: ["feedback", "sheet", "tracking", "log"]
+            },
+            {
+                id: "form-dip",
+                title: "DIP Checklist Verification Form",
+                url: "https://docs.google.com/forms/d/e/1FAIpQLSe_Gp1n-w6Q9q4LSc4esgA21lC9JUAQbzeVtMuFbcAvhTmlkA/viewform",
+                category: "forms",
+                desc: "Operational checkpoints checklist form submission.",
+                internal: false,
+                tags: ["dip", "check", "form", "compliance"]
+            },
+            {
+                id: "form-agent-review",
+                title: "Agent Performance Review Form",
+                url: "https://docs.google.com/forms/d/e/1FAIpQLSc_cd6Se1yqirMWLvCrkxH7cr6mpCuukvIteLHLNWAOmvMokQ/viewform",
+                category: "forms",
+                desc: "Intake evaluation evaluation form for team managers and QA leaders.",
+                internal: false,
+                tags: ["review", "agent", "qa", "evaluation"]
+            },
+            {
+                id: "form-it-tracker",
+                title: "IT Ekart Tracker Form",
+                url: "https://docs.google.com/forms/d/e/1FAIpQLSfwBzNrmN8uZq2T0P6cygGb7R-_iGdNJOvPPpAT5_-LtnqqKA/viewform",
+                category: "forms",
+                desc: "EKart logistics related IT and hardware support ticket logs.",
+                internal: false,
+                tags: ["it", "ekart", "tracker", "support", "forms"]
+            },
+            {
+                id: "form-skill-booster",
+                title: "Skill Booster Diagnostic Form",
+                url: "https://docs.google.com/forms/d/e/1FAIpQLSeMiesF4KvYYIZKRt0UTuhH7xL_zgKhXG4SEn3D9xwwzJK68A/viewform?usp=dialog",
+                category: "forms",
+                desc: "Registration and diagnostic questionnaire form for support booster programs.",
+                internal: false,
+                tags: ["training", "skill", "booster", "course"]
+            },
+            {
+                id: "form-prob-escalation",
+                title: "Probable Escalation Logging Form",
+                url: "https://docs.google.com/forms/d/e/1FAIpQLSesUr0zhj7K68HTjr52pwtzb6nMosh1jhapMTzK2fk4ep7aQg/viewform",
+                category: "forms",
+                desc: "Urgent ticket routing form used to flag extreme complaints or risks.",
+                internal: false,
+                tags: ["escalation", "hazard", "complaints", "probable"]
+            },
+            {
+                id: "form-it-breakdown-1",
+                title: "IT Breakdown Tracker (Short Link)",
+                url: "https://forms.gle/PsgpvS9zTgVL7box7",
+                category: "forms",
+                desc: "Quick access link to register immediate computer, CRM, or portal breakdowns.",
+                internal: false,
+                tags: ["it", "breakdown", "crash", "bug"]
+            },
+            {
+                id: "form-it-breakdown-2",
+                title: "IT System Breakdown Tracker (Full Link)",
+                url: "https://docs.google.com/forms/d/e/1FAIpQLScmUcZ-fUzfYD44FqC3UhO_WGbTfZyYfOITup_qwCdL0Nt0ng/viewform?pli=1&pli=1",
+                category: "forms",
+                desc: "Full comprehensive form submission for infrastructure and hardware outages.",
+                internal: false,
+                tags: ["it", "breakdown", "hardware", "crash"]
+            },
+            {
+                id: "form-tagging-1",
+                title: "Manual Tagging Operational Form (Preview)",
+                url: "https://docs.google.com/forms/d/1vduWAgTUA73j58VTKXHBjFa1KHTSFvXXCl9V2u9e7ZA/preview",
+                category: "forms",
+                desc: "Preview template interface for manual order/shipment tags operations.",
+                internal: false,
+                tags: ["manual", "tagging", "ops", "preview"]
+            },
+            {
+                id: "form-tagging-2",
+                title: "Manual Tagging Action Form",
+                url: "https://docs.google.com/forms/d/1vduWAgTUA73j58VTKXHBjFa1KHTSFvXXCl9V2u9e7ZA/viewform?edit_requested=true&pli=1",
+                category: "forms",
+                desc: "Operational entry form to manually update metadata tags on system accounts.",
+                internal: false,
+                tags: ["manual", "tagging", "form", "write"]
+            },
+            {
+                id: "form-escalation-main",
+                title: "Operations Escalation Submission Form",
+                url: "https://docs.google.com/forms/d/e/1FAIpQLSeRrIist-kC3b-uaSUHszG120KjcnAaxf9gt7oNihXEiDRFXw/viewform?pli=1&pli=1",
+                category: "forms",
+                desc: "Primary operational hierarchy escalation pathway form.",
+                internal: false,
+                tags: ["escalation", "issue", "support", "main"]
+            },
+            {
+                id: "form-zt-ack",
+                title: "Zero Tolerance Form Acknowledgement",
+                url: "https://docs.google.com/forms/d/1ZMe5xCXr6ty7u2NBDSFCKMe3_en8NqslYb7Qo9EMzGo/viewform?edit_requested=true",
+                category: "forms",
+                desc: "Policy, safety, and agent compliance verification acknowledgment form.",
+                internal: false,
+                tags: ["compliance", "zero tolerance", "policy", "signoff"]
+            },
+            {
+                id: "form-call-triaging",
+                title: "Call Triaging Data Intake Form",
+                url: "https://docs.google.com/forms/d/e/1FAIpQLSdNEw8n_z1yxt4fqebNBiGsZnrdqIZymorzrobpLcWLior0Ew/viewform?usp=send_form",
+                category: "forms",
+                desc: "Captures and categorizes initial telephone diagnostic issues.",
+                internal: false,
+                tags: ["triaging", "call", "telephony", "intake"]
+            },
+            {
+                id: "form-it-feedback",
+                title: "IT Support General Intake Sheet",
+                url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdABSaTKojRfnJ3x2czJ44ewl4qLq5T-tYfDPZmDeamLI833A/formResponse",
+                category: "forms",
+                desc: "Database response interface for corporate desktop and network requests.",
+                internal: false,
+                tags: ["it", "helpdesk", "form", "response"]
+            },
+
+            // Category: Sheets & Data Lists
+            {
+                id: "sheet-iphone",
+                title: "iPhone 14 Stock Inventory Sheet",
+                url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR4yFt5fJVPoFDNdYUAtDwmoAkzBYZ1pgC6hRC_W7lbSQpXbSd5pKbUdXAGw24hJfM8ys6vzQutmmSK/pubhtml",
+                category: "sheets",
+                desc: "Real-time published inventory and stock deployment sheets for iPhone 14 allocations.",
+                internal: false,
+                tags: ["iphone", "stock", "catalog", "apple", "inventory"]
+            },
+            {
+                id: "sheet-icici-bin",
+                title: "ICICI Bin Reference Database",
+                url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSnObKJTqVy2ISSBD-HSJStSVXibff678yGNboubXIIzuFdadX6JrCpDzqyTWWfzg/pubhtml",
+                category: "sheets",
+                desc: "Master directory detailing all valid ICICI credit and debit card BIN ranges.",
+                internal: false,
+                tags: ["icici", "bin", "cards", "bank"]
+            },
+            {
+                id: "sheet-axis-bin",
+                title: "Axis Bank BIN Reference Database",
+                url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpxh8FLD5QKFajWdbtxsce5EXAr1hSV-IYTs17H-d2ODTSgXDTkLrSjarxVSFzg67KuvrulUJJ0f9G/pubhtml",
+                category: "sheets",
+                desc: "Master reference list detailing Axis card BIN parameters.",
+                internal: false,
+                tags: ["axis", "bin", "cards", "bank"]
+            },
+            {
+                id: "sheet-hdfc-bin",
+                title: "HDFC BIN Reference Database",
+                url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQYp_P6SK7bikHn-qVtK4SDD8VUqpUFj_iQauOJqHoR8XMlzDkVuZlsnwCmIPWlVPwYF9IZ-UBH04D1/pubhtml",
+                category: "sheets",
+                desc: "Master data directory for identifying HDFC card ranges.",
+                internal: false,
+                tags: ["hdfc", "bin", "cards", "bank"]
+            },
+            {
+                id: "sheet-realtime-hours",
+                title: "Real-time Login Hours & AHT Tracker",
+                url: "https://docs.google.com/spreadsheets/d/1UcRmAbHGl7NKjMWWIESmfDv2BPWPSaL8gg-EpHYjEoc/edit?gid=0#gid=0",
+                category: "sheets",
+                desc: "Live document tracking log hours, team performance metrics, and shifts stats.",
+                internal: false,
+                tags: ["aht", "login", "metrics", "hours", "shift"]
+            },
+            {
+                id: "sheet-untraceable-marked",
+                title: "Untraceable Deliveries Master Log",
+                url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSuoZzT1QTiArcuFC9P2tbIkDe4JIKDvE_aIGlcXYw8zKJB3sZA-pUSe9WZcRawvNlzZZVBSqeHMc7s/pubhtml",
+                category: "sheets",
+                desc: "Consolidated index of shipments officially marked untraceable by delivery fleets.",
+                internal: false,
+                tags: ["untraceable", "delivery", "lost", "shipment"]
+            },
+            {
+                id: "sheet-deepak-sir",
+                title: "Management KPI Dashboard (Deepak Sir)",
+                url: "https://docs.google.com/spreadsheets/d/1ZYRi3zd5ovYNGmM5xqTb7mjZ2s6BlnfgUu1eG39Jl38/edit?gid=1522254193#gid=1522254193",
+                category: "sheets",
+                desc: "Consolidated site execution dashboard monitoring productivity and operations KPIs.",
+                internal: false,
+                tags: ["deepak", "management", "kpi", "lead"]
+            },
+            {
+                id: "sheet-dip-check",
+                title: "DIP Compliance Audit Log Sheet",
+                url: "https://docs.google.com/spreadsheets/d/1UkdM9-Aw6gcSf6P775VtYVS4I5Ct0cPh6m6zAze6VBs/edit?gid=187099888#gid=187099888",
+                category: "sheets",
+                desc: "Auditing log repository monitoring DIP verification checks.",
+                internal: false,
+                tags: ["dip", "compliance", "audit", "sheet"]
+            },
+
+            // Category: Internal Tools & Portals
+            {
+                id: "tool-looker",
+                title: "Looker Studio Ops Performance Reporting",
+                url: "https://lookerstudio.google.com/reporting/6ff21288-94e6-4d84-b034-158bb7c1d1a2/page/page_12345",
+                category: "tools",
+                desc: "High-level Looker dashboards tracing SLAs, queue statuses, and ticket resolutions.",
+                internal: true,
+                tags: ["looker", "report", "analytics", "dashboard"]
+            },
+            {
+                id: "tool-recharge-portal",
+                title: "Flipkart Recharge Transaction Portal",
+                url: "https://sites.google.com/flipkart.com/recharge-transaction-portal/recharge-transaction",
+                category: "tools",
+                desc: "Corporate portal providing lookup procedures for cellular/utility recharge failures.",
+                internal: true,
+                tags: ["recharge", "transaction", "portal", "sites"]
+            },
+            {
+                id: "tool-smart-assist",
+                title: "Flipkart Smart Assist System",
+                url: "http://smartassist.flipkart.net/flipkart/#/",
+                category: "tools",
+                desc: "Standard internal CRM mapping troubleshooting workflows and scripts.",
+                internal: true,
+                tags: ["smart", "assist", "crm", "workflow"]
+            },
+            {
+                id: "tool-password-reset",
+                title: "FK Passit LDAP System",
+                url: "https://passit.fkinternal.com/#/",
+                category: "tools",
+                desc: "Self-service engine allowing quick reset/updating of Active Directory credentials.",
+                internal: true,
+                tags: ["password", "ldap", "passit", "credentials"]
+            },
+            {
+                id: "tool-ekart-console",
+                title: "EKart Logistics Operations Console",
+                url: "http://10.24.1.71/hub-ops/tracking/shipments",
+                category: "tools",
+                desc: "Local server utility to audit status, runsheets, and physical hubs for shipments.",
+                internal: true,
+                tags: ["ekart", "console", "tracking", "local"]
+            },
+            {
+                id: "tool-kapture-chat",
+                title: "Kapture CRM Chat Gateway",
+                url: "https://flipkart.kapture.chat/web/auth-login",
+                category: "tools",
+                desc: "Core interface for agents conducting live web chats with customers.",
+                internal: true,
+                tags: ["kapture", "chat", "login", "gateway"]
+            },
+            {
+                id: "tool-ct-selfserve",
+                title: "CT Kapture Customer Service CRM",
+                url: "https://selfserveapp.kapturecrm.com/support-portals/fp-smart-assist/",
+                category: "tools",
+                desc: "Specific support portal linked with Flipkart Smart Assist accounts.",
+                internal: true,
+                tags: ["crm", "kapture", "ct", "selfserve"]
+            },
+            {
+                id: "tool-convin",
+                title: "Convin.AI Telephony Sign-In",
+                url: "https://flipkart.convin.ai/signin",
+                category: "tools",
+                desc: "AI-driven call monitoring software assessing quality scores and compliance.",
+                internal: true,
+                tags: ["convin", "audio", "monitoring", "telephony"]
+            },
+            {
+                id: "tool-audit-xpert",
+                title: "Audit Xpert QA Console",
+                url: "http://auditxpert.fkinternal.com/",
+                category: "tools",
+                desc: "Auditing engine assessing team logs, notes and transactions.",
+                internal: true,
+                tags: ["audit", "qa", "xpert", "quality"]
+            },
+            {
+                id: "tool-ldap-reset",
+                title: "LDAP Password Recovery (Authn)",
+                url: "https://authn.flipkart.net/forgot-pwd",
+                category: "tools",
+                desc: "Corporate password recovery pathway.",
+                internal: true,
+                tags: ["ldap", "authn", "credentials", "recovery"]
+            },
+            {
+                id: "tool-one-stop",
+                title: "One Stop Performance View Site",
+                url: "https://sites.google.com/partner.flipkart.com/one-stop-view/home",
+                category: "tools",
+                desc: "Integrated dashboard mapping overall partner metrics and target levels.",
+                internal: true,
+                tags: ["one stop", "performance", "partner", "view"]
+            },
+            {
+                id: "tool-accops",
+                title: "Accops Workspace Driver Gateway",
+                url: "https://propalmsnetwork-my.sharepoint.com/:u:/g/personal/ayaz_dhala_accops_com/EbWQ1rsVA5ZKgas5qcWXHywBQwczl6KoJgmmkRkBUAVOTw?e=YApLBF",
+                category: "tools",
+                desc: "Direct corporate Sharepoint portal link to download secure network connectivity drivers.",
+                internal: true,
+                tags: ["accops", "vpn", "gateway", "driver", "avaya"]
+            },
+            {
+                id: "tool-accops-address",
+                title: "Accops Domain Connection IP",
+                url: "https://cxconnect1.fkinternal.com",
+                category: "tools",
+                desc: "Domain link for Accops client configuration: cxconnect1.fkinternal.com.",
+                internal: true,
+                tags: ["accops", "gateway", "ip", "address"]
+            },
+            {
+                id: "tool-avaya-cert",
+                title: "Avaya Certificate Google Drive Folder",
+                url: "https://drive.google.com/drive/folders/1MTwIqjPGGyLfxu3og5Xlb7mZ27SeZwFk",
+                category: "tools",
+                desc: "Security authentication folder containing credentials files for softphone profiles.",
+                internal: true,
+                tags: ["avaya", "telephony", "certificates", "drive"]
+            },
+            {
+                id: "tool-de-details",
+                title: "Delivery Executive (DE) Directory Site",
+                url: "https://sites.google.com/flipkart.com/dedetails/home",
+                category: "tools",
+                desc: "Rider directory tracking contact information, hub bases, and logistics lines.",
+                internal: true,
+                tags: ["de", "rider", "delivery", "details"]
+            },
+
+            // Category: Scripts & Automation
+            {
+                id: "script-payu",
+                title: "PayU Transaction Resolver Script",
+                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbxMRt8UXa14zKGkLehxj3EiYl626UGRvP295z3k5uNg6M4i0VnywFExBIN-agV1-FvrAQ/exec?pli=1",
+                category: "automation",
+                desc: "Google Apps Script checking payment status on PayU integrations.",
+                internal: true,
+                tags: ["payu", "script", "payment", "automation", "macros"]
+            },
+            {
+                id: "script-microsite",
+                title: "Micro Site Transaction Handler Script",
+                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbxMRt8UXa14zKGkLehxj3EiYl626UGRvP295z3k5uNg6M4i0VnywFExBIN-agV1-FvrAQ/exec",
+                category: "automation",
+                desc: "Operational macro handler verifying system micro-site ledger records.",
+                internal: true,
+                tags: ["microsite", "payment", "script", "apps script"]
+            },
+            {
+                id: "script-canc",
+                title: "Order Cancellation Action Script",
+                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbwa8V8pP_GVBJb5zVDLgZ8oSE0FeNAeR4A0czkKQ6_slTIAYE5-lH30P9u4Wu92QZo0/exec?pli=1",
+                category: "automation",
+                desc: "Automated status override script resolving stubborn cancellations.",
+                internal: true,
+                tags: ["cancellation", "order", "reversal", "canc", "override"]
+            },
+            {
+                id: "script-cnac",
+                title: "CNAC Compensation Form Script",
+                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbwa8V8pP_GVBJb5zVDLgZ8oSE0FeNAeR4A0czkKQ6_slTIAYE5-lH30P9u4Wu92QZo0/exec",
+                category: "automation",
+                desc: "Apps Script processing compensatory payments for failed delivery SLAs.",
+                internal: true,
+                tags: ["cnac", "compensation", "approval", "script"]
+            },
+            {
+                id: "script-multi-return",
+                title: "Multiple Return Reason Core Script",
+                url: "https://script.google.com/a/flipkart.com/macros/s/AKfycbyQhf4YHvqkYO775VbwY0-1jR4Dc6suSeEKgYLGv6xV-OX5ljw_WixOG7tCsccT0L0pBQ/exec",
+                category: "automation",
+                desc: "Resolves reverse logistics issues on multi-item returns.",
+                internal: true,
+                tags: ["returns", "script", "reverse", "multi-return"]
+            },
+            {
+                id: "script-asc",
+                title: "Authorized Service Center (ASC) Diagnostic Script",
+                url: "https://script.google.com/a/flipkart.com/macros/s/AKfycbwKfqiZG6ZL-UUbPtZkaN9qerV-Lmn2ByXup4vnTf81_c8ayqVxkkSu-f2uFH4Xh7Rw/exec",
+                category: "automation",
+                desc: "Instantly checks warranty conditions and maps nearby certified repair hubs.",
+                internal: true,
+                tags: ["asc", "warranty", "centers", "support"]
+            },
+            {
+                id: "script-multi-run",
+                title: "Multi-Run Dispatch Visibility Portal",
+                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbxLTsVHmE7a8vN2WOszCBw_7Otp5iSLwxCqhfCqvARv1mXau3NApXefVM93NEVNvgOs2A/exec",
+                category: "automation",
+                desc: "Detailed lookup system auditing daily delivery dispatch run-sheets.",
+                internal: true,
+                tags: ["runsheet", "dispatch", "multi-run", "single run"]
+            },
+            {
+                id: "script-delay-pickup",
+                title: "Delay in Pickup Hub Monitor",
+                url: "https://script.google.com/a/partner.flipkart.com/macros/s/AKfycbyEF-p-DYd_l4jAdcGG28kJTNdwPq8QlPzTQ2iJrAk8AXKJaglIPnuTmlORbxgZq8WuEw/exec",
+                category: "automation",
+                desc: "Monitors warehouse delay logs and handles pickup hub failures.",
+                internal: true,
+                tags: ["delay", "pickup", "hub", "lag"]
+            },
+
+            // Category: Guides & FAQs
+            {
+                id: "guide-black-doc",
+                title: "Flipkart Black Membership FAQ Doc",
+                url: "https://docs.google.com/document/e/2PACX-1vRYmxbNewfeNQb9IaRClnSvplumqi9FYetNSRlmBduMmV80G9xUzH4S-gz0FVjuG1fBEXuAHTUFsrkI/pub",
+                category: "guides",
+                desc: "Published handbook specifying rules and escalation metrics for FK Black accounts.",
+                internal: false,
+                tags: ["black", "faq", "membership", "club"]
+            },
+            {
+                id: "guide-black-site",
+                title: "Flipkart Black Official Site Guide",
+                url: "https://www.flipkart.com/pages/fk-black-faq",
+                category: "guides",
+                desc: "Public-facing FAQ explaining VIP benefits, rewards and privileges.",
+                internal: false,
+                tags: ["black", "site", "landing", "premium"]
+            },
+            {
+                id: "guide-brief-head",
+                title: "Campaign Briefing Master Guidelines",
+                url: "https://docs.google.com/document/d/158Wz3jOJ124u68v4NP0S_ba6eCdwos5Uu8OhUuDtBeI/edit?tab=t.j5e4w8jjmsxf#heading=h.tzm0z4i02hib",
+                category: "guides",
+                desc: "Operational briefing outlining target support metrics and guidelines.",
+                internal: false,
+                tags: ["briefing", "campaign", "guidelines", "head"]
+            },
+            {
+                id: "guide-brief-doc",
+                title: "Operations Briefing Document",
+                url: "https://docs.google.com/document/d/158Wz3jOJ124u68v4NP0S_ba6eCdwos5Uu8OhUuDtBeI/edit?tab=t.0",
+                category: "guides",
+                desc: "Operational handbook detailing shift rules and current campaign criteria.",
+                internal: false,
+                tags: ["briefing", "operations", "shift", "doc"]
+            },
+            {
+                id: "guide-notes",
+                title: "Manual Reference Process Notes",
+                url: "https://docs.google.com/document/d/1s9tYA7cnmZ8XzcO7Jb-jf1LcuSb_ivbnraRDxHhES3o/edit?tab=t.0#heading=h.cyhenhfg35j2",
+                category: "guides",
+                desc: "Reference manual containing step-by-step resolution pathways.",
+                internal: false,
+                tags: ["notes", "manual", "troubleshooting", "resolution"]
+            },
+            {
+                id: "guide-bbd",
+                title: "BBD Sales Campaign Training Slides",
+                url: "https://docs.google.com/presentation/d/1Z2jMDoDlQNLTZRuWqhm7svDvR1YUduvXpvY2RoOnUrk/preview?slide=id.g3824ba88fc5_463_0",
+                category: "guides",
+                desc: "Visual training presentation for Big Billion Days campaign protocols.",
+                internal: false,
+                tags: ["bbd", "slides", "sale", "billion"]
+            },
+            {
+                id: "guide-training-meet",
+                title: "Daily Standup & Training Google Meet",
+                url: "https://meet.google.com/kyt-hsrc-idr?authuser=0",
+                category: "guides",
+                desc: "Live video call room for daily huddles and briefing sessions.",
+                internal: false,
+                tags: ["meet", "training", "huddle", "standup"]
+            }
+        ];
+
+        // Core visual category listings mapping
+        const categories = [
+            { id: "all", label: "All Links", icon: "fa-cubes", desc: "All corporate portals, dashboards, sheets and tracking scripts." },
+            { id: "favorites", label: "My Bookmarks", icon: "fa-star text-amber-500", desc: "Your personally saved and starred active references." },
+            { id: "forms", label: "Forms & Trackers", icon: "fa-file-signature text-sky-600", desc: "DIP checklists, IT breakdowns, evaluations, and logs." },
+            { id: "sheets", label: "Sheets & Data", icon: "fa-table text-emerald-600", desc: "Inventory catalogs, login logs, and BIN databases." },
+            { id: "tools", label: "Internal Tools", icon: "fa-sliders text-indigo-600", desc: "Customer care CRMs, VPN drivers, and lookups." },
+            { id: "automation", label: "Scripts & Macros", icon: "fa-bolt text-purple-600", desc: "Google Apps script automation utilities." },
+            { id: "guides", label: "Guides & Docs", icon: "fa-book-open text-rose-600", desc: "Process documentation, slide briefs, and training meets." }
+        ];
+
+        // Default layout configurations
+        const defaultLayout = {
+            columns: '3', // '2', '3', '4'
+            density: 'comfortable', // 'comfortable', 'compact'
+            sidebarPos: 'left', // 'left', 'right'
+            accent: 'blue', // 'blue', 'slate', 'emerald', 'rose'
+            showTags: true,
+            showDesc: true
+        };
+
+        // Active Application State Memory
+        let state = {
+            activeCategory: 'all',
+            searchQuery: '',
+            networkFilter: 'all', // all, internal, external
+            favorites: JSON.parse(localStorage.getItem('fk_favs_v4_light') || '[]'),
+            resources: [],
+            layout: { ...defaultLayout }
+        };
+
+        let editingResourceId = null;
+
+        window.onload = function () {
+            loadResources();
+            loadLayoutSettings();
+            applyLayoutClasses();
+            renderCategoryMenu();
+            renderResourceCards();
+            setupKeyboardEngine();
+            showToast("FK Sniper Operational Console synchronized.");
+        };
+
+        function loadResources() {
+            const stored = localStorage.getItem('fk_sniper_resources_v4');
+            if (stored) {
+                try {
+                    state.resources = JSON.parse(stored);
+                } catch(e) {
+                    state.resources = [...baseResources];
+                }
+            } else {
+                state.resources = [...baseResources];
+                localStorage.setItem('fk_sniper_resources_v4', JSON.stringify(state.resources));
+            }
+        }
+
+        function saveResourcesToStorage() {
+            localStorage.setItem('fk_sniper_resources_v4', JSON.stringify(state.resources));
+        }
+
+        function loadLayoutSettings() {
+            const stored = localStorage.getItem('fk_sniper_layout_v4');
+            if (stored) {
+                try {
+                    state.layout = { ...defaultLayout, ...JSON.parse(stored) };
+                } catch(e) {
+                    state.layout = { ...defaultLayout };
+                }
+            } else {
+                state.layout = { ...defaultLayout };
+            }
+            document.getElementById('layout-toggle-desc').checked = state.layout.showDesc;
+            document.getElementById('layout-toggle-tags').checked = state.layout.showTags;
+        }
+
+        function saveLayoutSettings() {
+            localStorage.setItem('fk_sniper_layout_v4', JSON.stringify(state.layout));
+        }
+    </script>
+
+    <script>
+        // Triggered by on-screen custom additions and edits
+        function setLayoutSetting(property, value) {
+            state.layout[property] = value;
+            saveLayoutSettings();
+            applyLayoutClasses();
+            renderResourceCards();
+            renderCategoryMenu();
+            showToast(`Layout changed: ${property} -> ${value}`);
+        }
+
+        function applyLayoutClasses() {
+            const grid = document.getElementById('resource-grid');
+            const mainGrid = document.getElementById('main-grid-layout');
+            const sidebar = document.getElementById('sidebar-panel');
+            const content = document.getElementById('content-panel');
+            const body = document.body;
+
+            // 1. Columns configuration
+            grid.className = 'grid gap-3';
+            if (state.layout.columns === '2') {
+                grid.classList.add('grid-cols-1', 'md:grid-cols-2');
+            } else if (state.layout.columns === '4') {
+                grid.classList.add('grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'xl:grid-cols-4');
+            } else {
+                grid.classList.add('grid-cols-1', 'md:grid-cols-2', 'xl:grid-cols-3');
+            }
+
+            // 2. Sidebar side orientation matching
+            if (state.layout.sidebarPos === 'right') {
+                sidebar.className = 'lg:col-span-3 xl:col-span-3 space-y-4 lg:order-last';
+                content.className = 'lg:col-span-9 xl:col-span-9 space-y-4 lg:order-first';
+            } else {
+                sidebar.className = 'lg:col-span-3 xl:col-span-3 space-y-4 lg:order-first';
+                content.className = 'lg:col-span-9 xl:col-span-9 space-y-4 lg:order-last';
+            }
+
+            // 3. Highlight accents coloring
+            body.className = body.className.replace(/theme-accent-\w+/, `theme-accent-${state.layout.accent}`);
+            
+            const header = document.getElementById('main-header');
+            const searchBtn = document.getElementById('search-action-btn');
+            const addBtn = document.getElementById('sidebar-add-btn');
+            const submitBtn = document.getElementById('modal-submit-btn');
+            const layoutCloseBtn = document.getElementById('layout-close-action-btn');
+
+            const colors = {
+                blue: { bg: 'bg-[#2874f0]', hover: 'hover:bg-[#1053c8]' },
+                slate: { bg: 'bg-[#334155]', hover: 'hover:bg-[#1e293b]' },
+                emerald: { bg: 'bg-[#059669]', hover: 'hover:bg-[#047857]' },
+                rose: { bg: 'bg-[#e11d48]', hover: 'hover:bg-[#be123c]' }
+            };
+
+            const activeColor = colors[state.layout.accent] || colors.blue;
+            header.className = `${activeColor.bg} text-white shadow-fkShadow sticky top-0 z-40 px-4 py-3 transition-colors duration-300`;
+            
+            if (searchBtn) searchBtn.className = `${activeColor.bg} text-white px-6 flex items-center justify-center font-bold text-xs border border-y-slate-300 border-r-slate-300 cursor-pointer select-none font-mono ${activeColor.hover} transition-colors`;
+            if (addBtn) addBtn.className = `text-[10px] ${activeColor.bg} ${activeColor.hover} text-white font-bold px-2 py-1 rounded transition-colors flex items-center gap-1 shadow-sm`;
+            if (submitBtn) submitBtn.className = `px-4 py-2 ${activeColor.bg} ${activeColor.hover} text-white rounded-lg text-xs font-semibold shadow-md transition-all`;
+            if (layoutCloseBtn) layoutCloseBtn.className = `px-4 py-2 ${activeColor.bg} ${activeColor.hover} text-white rounded-lg text-xs font-semibold shadow-md transition-all`;
+
+            // Active button triggers inside layout selector modal
+            document.querySelectorAll('[id^="col-btn-"]').forEach(btn => btn.className = 'py-1.5 rounded-md text-xs font-bold transition-all bg-white text-slate-600 border border-slate-200');
+            const targetColBtn = document.getElementById(`col-btn-${state.layout.columns}`);
+            if (targetColBtn) targetColBtn.className = 'py-1.5 rounded-md text-xs font-bold transition-all bg-slate-800 text-white';
+
+            document.querySelectorAll('[id^="density-btn-"]').forEach(btn => btn.className = 'py-1.5 rounded-md text-xs font-bold transition-all bg-white text-slate-600 border border-slate-200');
+            const targetDensityBtn = document.getElementById(`density-btn-${state.layout.density}`);
+            if (targetDensityBtn) targetDensityBtn.className = 'py-1.5 rounded-md text-xs font-bold transition-all bg-slate-800 text-white';
+
+            document.querySelectorAll('[id^="sidebar-btn-"]').forEach(btn => btn.className = 'py-1.5 rounded-md text-xs font-bold transition-all bg-white text-slate-600 border border-slate-200');
+            const targetSidebarBtn = document.getElementById(`sidebar-btn-${state.layout.sidebarPos}`);
+            if (targetSidebarBtn) targetSidebarBtn.className = 'py-1.5 rounded-md text-xs font-bold transition-all bg-slate-800 text-white';
+
+            document.querySelectorAll('[id^="accent-btn-"]').forEach(btn => btn.className = 'py-2 px-1 rounded-lg border text-xs font-semibold flex flex-col items-center gap-1 transition-all bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100');
+            const targetAccentBtn = document.getElementById(`accent-btn-${state.layout.accent}`);
+            if (targetAccentBtn) targetAccentBtn.className = 'py-2 px-1 rounded-lg border-2 text-xs font-bold flex flex-col items-center gap-1 transition-all bg-white border-slate-800 text-slate-900 shadow-sm';
+        }
+
+        function resetLayoutDefault() {
+            state.layout = { ...defaultLayout };
+            saveLayoutSettings();
+            applyLayoutClasses();
+            renderResourceCards();
+            renderCategoryMenu();
+            document.getElementById('layout-toggle-desc').checked = true;
+            document.getElementById('layout-toggle-tags').checked = true;
+            showToast("Factory defaults restored.");
+        }
+
+        function triggerShortcutFilter(catId) {
+            state.activeCategory = catId;
+            const catObj = categories.find(c => c.id === catId);
+            if (catObj) {
+                document.getElementById('current-category-label').innerText = catObj.label;
+                document.getElementById('current-category-desc').innerText = catObj.desc;
+            }
+            renderCategoryMenu();
+            renderResourceCards();
+        }
+
+        function renderCategoryMenu() {
+            const container = document.getElementById('category-nav');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const colors = {
+                blue: "border-l-fk-blue text-fk-blue",
+                slate: "border-l-[#334155] text-[#334155]",
+                emerald: "border-l-[#059669] text-[#059669]",
+                rose: "border-l-[#e11d48] text-[#e11d48]"
+            };
+            const activeColorClass = colors[state.layout.accent] || colors.blue;
+
+            categories.forEach(cat => {
+                const isActive = state.activeCategory === cat.id;
+                const activeStyle = isActive 
+                    ? `bg-slate-100 border-l-4 ${activeColorClass} font-bold shadow-sm` 
+                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 border-transparent";
+                
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left flex items-center justify-between px-2.5 py-2.5 rounded-lg text-xs transition-all border-y border-r ${activeStyle}`;
+                btn.onclick = () => triggerShortcutFilter(cat.id);
+
+                let count = 0;
+                if (cat.id === 'all') {
+                    count = state.resources.length;
+                } else if (cat.id === 'favorites') {
+                    count = state.favorites.length;
+                } else {
+                    count = state.resources.filter(item => item.category === cat.id).length;
+                }
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-2 font-medium">
+                        <i class="fa-solid ${cat.icon} text-[13px] w-4 text-center"></i>
+                        <span>${cat.label}</span>
+                    </div>
+                    <span class="px-1.5 py-0.5 text-[9px] font-mono bg-white text-slate-500 rounded border border-slate-200 font-bold">${count}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        function handleSearch() {
+            state.searchQuery = document.getElementById('global-search').value.toLowerCase().trim();
+            const clearBtn = document.getElementById('clear-search-btn');
+            if (state.searchQuery.length > 0) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderResourceCards();
+        }
+
+        function applySearchQuery(query) {
+            document.getElementById('global-search').value = query;
+            handleSearch();
+            document.getElementById('global-search').focus();
+        }
+
+        function clearSearch() {
+            document.getElementById('global-search').value = '';
+            state.searchQuery = '';
+            document.getElementById('clear-search-btn').classList.add('hidden');
+            renderResourceCards();
+        }
+
+        function resetAllFilters() {
+            clearSearch();
+            state.networkFilter = 'all';
+            triggerShortcutFilter('all');
+            updateNetworkFilterUI();
+            showToast("Filters completely restored.");
+        }
+
+        function setNetworkFilter(net) {
+            state.networkFilter = net;
+            updateNetworkFilterUI();
+            renderResourceCards();
+        }
+
+        function updateNetworkFilterUI() {
+            const btns = {
+                all: document.getElementById('net-btn-all'),
+                internal: document.getElementById('net-btn-internal'),
+                external: document.getElementById('net-btn-external')
+            };
+
+            Object.keys(btns).forEach(key => {
+                if (!btns[key]) return;
+                btns[key].className = "px-2 py-1 rounded text-slate-500 hover:text-slate-800 transition-all font-semibold flex items-center gap-1";
+            });
+
+            if (state.networkFilter === 'all') {
+                btns.all.className = "px-2 py-1 rounded text-slate-700 font-bold bg-white border border-slate-200 shadow-sm";
+            } else if (state.networkFilter === 'internal') {
+                btns.internal.className = "px-2 py-1 rounded text-rose-700 font-bold bg-rose-100 border border-rose-200 shadow-sm flex items-center gap-1";
+            } else if (state.networkFilter === 'external') {
+                btns.external.className = "px-2 py-1 rounded text-emerald-700 font-bold bg-emerald-100 border border-emerald-200 shadow-sm flex items-center gap-1";
+            }
+        }
+
+        function renderResourceCards() {
+            const grid = document.getElementById('resource-grid');
+            const emptyState = document.getElementById('empty-state');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            let list = [...state.resources];
+
+            if (state.activeCategory !== 'all') {
+                if (state.activeCategory === 'favorites') {
+                    list = list.filter(item => state.favorites.includes(item.id));
+                } else {
+                    list = list.filter(item => item.category === state.activeCategory);
+                }
+            }
+
+            if (state.networkFilter !== 'all') {
+                const requireInternal = state.networkFilter === 'internal';
+                list = list.filter(item => item.internal === requireInternal);
+            }
+
+            if (state.searchQuery) {
+                list = list.filter(item => {
+                    const titleMatch = item.title.toLowerCase().includes(state.searchQuery);
+                    const descMatch = item.desc ? item.desc.toLowerCase().includes(state.searchQuery) : false;
+                    const urlMatch = item.url.toLowerCase().includes(state.searchQuery);
+                    const tagsMatch = item.tags && item.tags.some(t => t.toLowerCase().includes(state.searchQuery));
+                    return titleMatch || descMatch || urlMatch || tagsMatch;
+                });
+            }
+
+            const sortBy = document.getElementById('sort-selector').value;
+            if (sortBy === 'name') {
+                list.sort((a, b) => a.title.localeCompare(b.title));
+            } else if (sortBy === 'favorites') {
+                list.sort((a, b) => {
+                    const isAFav = state.favorites.includes(a.id) ? 1 : 0;
+                    const isBFav = state.favorites.includes(b.id) ? 1 : 0;
+                    return isBFav - isAFav;
+                });
+            }
+
+            if (list.length === 0) {
+                grid.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                document.getElementById('total-count-badge').innerText = '0';
+                return;
+            }
+
+            grid.classList.remove('hidden');
+            emptyState.classList.add('hidden');
+            document.getElementById('total-count-badge').innerText = list.length;
+
+            const accentBorders = {
+                blue: 'hover:border-fk-blue',
+                slate: 'hover:border-slate-700',
+                emerald: 'hover:border-emerald-600',
+                rose: 'hover:border-rose-600'
+            };
+            const cardAccentBorderClass = accentBorders[state.layout.accent] || accentBorders.blue;
+            const isCompact = state.layout.density === 'compact';
+
+            list.forEach(resource => {
+                const isFavorite = state.favorites.includes(resource.id);
+                const favoriteIcon = isFavorite ? 'fa-solid fa-star text-amber-500' : 'fa-regular fa-star text-slate-400 hover:text-amber-500';
+                
+                const networkBadge = resource.internal 
+                    ? `<span class="px-2 py-0.5 text-[9px] font-bold bg-rose-50 border border-rose-200 text-rose-700 rounded font-mono"><i class="fa-solid fa-lock text-[8px] mr-1"></i>VPN</span>`
+                    : `<span class="px-2 py-0.5 text-[9px] font-bold bg-emerald-50 border border-emerald-200 text-emerald-700 rounded font-mono"><i class="fa-solid fa-earth-americas text-[8px] mr-1"></i>PUB</span>`;
+
+                const card = document.createElement('div');
+                
+                if (isCompact) {
+                    card.className = `resource-card bg-white border border-slate-200 rounded-xl p-3 flex flex-col justify-between ${cardAccentBorderClass} relative overflow-hidden shadow-sm hover:shadow-md transition-all`;
+                    const highlightBar = isFavorite ? `<div class="absolute top-0 left-0 right-0 h-[2.5px] bg-amber-500"></div>` : '';
+                    
+                    card.innerHTML = `
+                        ${highlightBar}
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-start gap-1">
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    ${networkBadge}
+                                    <span class="text-[9px] font-mono text-slate-400 tracking-wider uppercase font-bold bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200">${resource.category}</span>
+                                </div>
+                                <div class="flex items-center gap-1 scale-90 origin-top-right">
+                                    <button onclick="toggleFavorite(event, '${resource.id}')" class="p-1 hover:bg-slate-100 rounded transition-colors" title="Bookmark Link">
+                                        <i class="${favoriteIcon} text-xs"></i>
+                                    </button>
+                                    <button onclick="triggerEditModal(event, '${resource.id}')" class="p-1 hover:bg-slate-100 text-slate-400 hover:text-fk-blue rounded transition-colors" title="Edit Link Details">
+                                        <i class="fa-solid fa-pencil text-xs"></i>
+                                    </button>
+                                    <button onclick="triggerDeleteConfirm(event, '${resource.id}', '${resource.title.replace(/'/g, "\\'")}')" class="p-1 hover:bg-rose-50 hover:text-rose-600 text-slate-300 rounded transition-colors" title="Delete Resource">
+                                        <i class="fa-solid fa-trash-can text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <h4 class="text-xs font-bold text-slate-800 tracking-tight font-mono line-clamp-1" title="${resource.title}">${resource.title}</h4>
+                        </div>
+                        <div class="flex items-center gap-1 mt-2 pt-2 border-t border-slate-100">
+                            <button onclick="openResourceLink('${resource.id}', '${resource.url}')" class="flex-grow py-1 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded text-[9px] font-bold font-mono transition-all flex items-center justify-center gap-1 text-slate-700">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> OPEN LINK
+                            </button>
+                            <button onclick="copyResourceUrl(event, '${resource.url}')" class="px-2 py-1 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded text-slate-400 hover:text-slate-700" title="Copy URL">
+                                <i class="fa-solid fa-copy text-[10px]"></i>
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    card.className = `resource-card bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between ${cardAccentBorderClass} relative overflow-hidden shadow-sm hover:shadow-md transition-all`;
+                    const highlightBar = isFavorite ? `<div class="absolute top-0 left-0 right-0 h-[3px] bg-amber-500"></div>` : '';
+                    
+                    const descHTML = state.layout.showDesc 
+                        ? `<p class="text-[11px] text-slate-500 leading-relaxed line-clamp-2">${resource.desc || 'No process description entry available.'}</p>` 
+                        : '';
+                    const tagsHTML = (state.layout.showTags && resource.tags && resource.tags.length > 0)
+                        ? `<div class="flex flex-wrap gap-1 pt-1.5">${resource.tags.slice(0, 3).map(t => `<span class="px-1.5 py-0.5 bg-slate-50 text-slate-400 rounded text-[9px] font-mono border border-slate-100">#${t}</span>`).join('')}</div>`
+                        : '';
+
+                    card.innerHTML = `
+                        ${highlightBar}
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-start gap-1">
+                                <div class="flex flex-wrap items-center gap-1.5">
+                                    ${networkBadge}
+                                    <span class="text-[9px] font-mono text-slate-400 tracking-wider uppercase font-bold bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200">${resource.category}</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <button onclick="toggleFavorite(event, '${resource.id}')" class="p-1.5 hover:bg-slate-100 rounded-md transition-colors" title="Bookmark Link">
+                                        <i class="${favoriteIcon} text-xs"></i>
+                                    </button>
+                                    <button onclick="triggerEditModal(event, '${resource.id}')" class="p-1.5 hover:bg-slate-100 text-slate-400 hover:text-fk-blue rounded-md transition-colors" title="Edit Link Details">
+                                        <i class="fa-solid fa-pencil text-xs"></i>
+                                    </button>
+                                    <button onclick="triggerDeleteConfirm(event, '${resource.id}', '${resource.title.replace(/'/g, "\\'")}')" class="p-1.5 hover:bg-rose-50 hover:text-rose-600 text-slate-300 rounded-md transition-colors" title="Delete Resource">
+                                        <i class="fa-solid fa-trash-can text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="space-y-1">
+                                <h4 class="text-xs font-bold text-slate-800 tracking-tight font-mono line-clamp-2" title="${resource.title}">${resource.title}</h4>
+                                ${descHTML}
+                                ${tagsHTML}
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-1.5 mt-3 pt-2.5 border-t border-slate-100">
+                            <button onclick="openResourceLink('${resource.id}', '${resource.url}')" class="flex-grow py-1.5 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-lg text-[10px] font-bold font-mono transition-all flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i> OPEN PORTAL
+                            </button>
+                            <button onclick="copyResourceUrl(event, '${resource.url}')" class="px-2.5 py-1.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-xs text-slate-500 hover:text-slate-800 transition-colors" title="Copy URL">
+                                <i class="fa-solid fa-copy"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleFavorite(event, id) {
+            event.stopPropagation();
+            const idx = state.favorites.indexOf(id);
+            if (idx > -1) {
+                state.favorites.splice(idx, 1);
+                showToast("Bookmark removed.");
+            } else {
+                state.favorites.push(id);
+                showToast("Bookmark saved successfully.");
+            }
+            
+            localStorage.setItem('fk_favs_v4_light', JSON.stringify(state.favorites));
+            renderCategoryMenu();
+            renderResourceCards();
+        }
+
+        function openResourceLink(id, url) {
+            showToast("Redirecting to secured external window...");
+            window.open(url, '_blank');
+        }
+
+        function copyResourceUrl(event, url) {
+            event.stopPropagation();
+            
+            const temp = document.createElement('textarea');
+            temp.value = url;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+
+            showToast("Copied target address directly.");
+        }
+
+        function openLayoutModal() {
+            const modal = document.getElementById('layout-modal');
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.classList.add('opacity-100');
+        }
+
+        function closeLayoutModal() {
+            const modal = document.getElementById('layout-modal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function openAddModal() {
+            editingResourceId = null;
+            document.getElementById('modal-header-title').innerText = "Add Custom Resource";
+            document.getElementById('modal-header-desc').innerText = "Create custom console mappings";
+            document.getElementById('modal-submit-btn').innerText = "Save Resource";
+            document.getElementById('add-link-form').reset();
+
+            const modal = document.getElementById('add-link-modal');
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.classList.add('opacity-100');
+            document.getElementById('add-title').focus();
+        }
+
+        function triggerEditModal(event, id) {
+            if (event) event.stopPropagation();
+            const resource = state.resources.find(r => r.id === id);
+            if (!resource) return;
+
+            editingResourceId = id;
+            document.getElementById('add-title').value = resource.title;
+            document.getElementById('add-url').value = resource.url;
+            document.getElementById('add-category').value = resource.category;
+            document.getElementById('add-network').value = resource.internal ? 'vpn' : 'pub';
+            document.getElementById('add-desc').value = resource.desc || '';
+            document.getElementById('add-tags').value = resource.tags ? resource.tags.join(', ') : '';
+
+            document.getElementById('modal-header-title').innerText = "Modify Resource Details";
+            document.getElementById('modal-header-desc').innerText = "Change link configurations and parameters";
+            document.getElementById('modal-submit-btn').innerText = "Update Mapping";
+
+            const modal = document.getElementById('add-link-modal');
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.classList.add('opacity-100');
+            document.getElementById('add-title').focus();
+        }
+
+        function closeAddModal() {
+            const modal = document.getElementById('add-link-modal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            document.getElementById('add-link-form').reset();
+            editingResourceId = null;
+        }
+
+        function saveCustomLink(e) {
+            e.preventDefault();
+            
+            const title = document.getElementById('add-title').value.trim();
+            const url = document.getElementById('add-url').value.trim();
+            const category = document.getElementById('add-category').value;
+            const isInternal = document.getElementById('add-network').value === 'vpn';
+            const desc = document.getElementById('add-desc').value.trim();
+            const rawTags = document.getElementById('add-tags').value;
+            const tags = rawTags ? rawTags.split(',').map(t => t.trim().toLowerCase()).filter(Boolean) : [];
+
+            if (editingResourceId) {
+                const index = state.resources.findIndex(item => item.id === editingResourceId);
+                if (index > -1) {
+                    state.resources[index] = {
+                        ...state.resources[index],
+                        title: title,
+                        url: url,
+                        category: category,
+                        internal: isInternal,
+                        desc: desc || 'Custom agent-added workspace link.',
+                        tags: tags
+                    };
+                    showToast(`Resource "${title}" updated successfully!`);
+                }
+                editingResourceId = null;
+            } else {
+                const newId = 'custom-' + Date.now();
+                const newResource = {
+                    id: newId,
+                    title: title,
+                    url: url,
+                    category: category,
+                    internal: isInternal,
+                    desc: desc || 'Custom agent-added workspace link.',
+                    tags: tags
+                };
+                state.resources.unshift(newResource);
+                showToast(`Resource "${title}" created successfully!`);
+            }
+
+            saveResourcesToStorage();
+            closeAddModal();
+            renderCategoryMenu();
+            renderResourceCards();
+        }
+
+        let targetDeleteId = null;
+
+        function triggerDeleteConfirm(event, id, title) {
+            event.stopPropagation();
+            targetDeleteId = id;
+            document.getElementById('delete-confirm-text').innerText = `Are you sure you want to permanently delete "${title}"? This cannot be undone.`;
+            
+            const modal = document.getElementById('delete-confirm-modal');
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.classList.add('opacity-100');
+
+            document.getElementById('confirm-delete-btn').onclick = function() {
+                confirmDeleteResource();
+            };
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('delete-confirm-modal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            targetDeleteId = null;
+        }
+
+        function confirmDeleteResource() {
+            if (!targetDeleteId) return;
+
+            state.resources = state.resources.filter(item => item.id !== targetDeleteId);
+            saveResourcesToStorage();
+
+            const favIdx = state.favorites.indexOf(targetDeleteId);
+            if (favIdx > -1) {
+                state.favorites.splice(favIdx, 1);
+                localStorage.setItem('fk_favs_v4_light', JSON.stringify(state.favorites));
+            }
+
+            closeDeleteModal();
+            renderCategoryMenu();
+            renderResourceCards();
+            showToast("Resource successfully removed.");
+        }
+    </script>
+
+    <script>
+        // Offline / Manual Import engine
+        function importBackupCode() {
+            const codeInput = document.getElementById('manual-import-code');
+            const token = codeInput.value.trim();
+            if (!token) {
+                showToast("Please enter a valid sync token first.");
+                return;
+            }
+
+            const decoded = decodeWorkspaceState(token);
+            if (decoded) {
+                state.resources = decoded.resources;
+                state.layout = { ...defaultLayout, ...decoded.layout };
+                state.favorites = decoded.favorites;
+
+                saveResourcesToStorage();
+                saveLayoutSettings();
+
+                applyLayoutClasses();
+                renderCategoryMenu();
+                renderResourceCards();
+                
+                codeInput.value = '';
+                showToast("Workspace successfully loaded!");
+            } else {
+                showToast("Invalid sync code. Please check and try again.");
+            }
+        }
+
+        function setupKeyboardEngine() {
+            document.addEventListener('keydown', function (e) {
+                const activeEl = document.activeElement;
+                const isTyping = activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'SELECT';
+
+                if (isTyping) {
+                    if (e.key === 'Escape' && activeEl.id === 'global-search') {
+                        clearSearch();
+                        activeEl.blur();
+                    }
+                    return;
+                }
+
+                const key = e.key.toLowerCase();
+
+                if (key === '/') {
+                    e.preventDefault();
+                    document.getElementById('global-search').focus();
+                    showToast("Console search active.");
+                } else if (key === 'escape') {
+                    closeAddModal();
+                    closeLayoutModal();
+                    closeDeleteModal();
+                    closeShareModal();
+                    resetAllFilters();
+                } else if (key === 'f') {
+                    triggerShortcutFilter('forms');
+                } else if (key === 's') {
+                    triggerShortcutFilter('sheets');
+                } else if (key === 't') {
+                    triggerShortcutFilter('tools');
+                } else if (key === 'a') {
+                    triggerShortcutFilter('automation');
+                } else if (key === 'g') {
+                    triggerShortcutFilter('guides');
+                } else if (key === 'i') {
+                    setNetworkFilter('internal');
+                    showToast("VPN Gateways Active");
+                } else if (key === 'e') {
+                    setNetworkFilter('external');
+                    showToast("Public Gateways Active");
+                }
+            });
+        }
+
+        function closeShareModal() {
+            const modal = document.getElementById('share-modal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function copyGeneratedShareLink() {
+            const input = document.getElementById('share-link-input');
+            input.select();
+            document.execCommand('copy');
+            showToast("Copied shared workspace link!");
+        }
+
+        function copyGeneratedBackupCode() {
+            const input = document.getElementById('share-backup-code');
+            input.select();
+            document.execCommand('copy');
+            showToast("Copied offline sync token!");
+        }
+
+        // Toast Engine
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            const toast = document.createElement('div');
+            toast.className = `p-3 rounded-lg border flex items-center gap-2.5 shadow-lg transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto bg-slate-800 border-slate-700 text-white font-mono text-[11px]`;
+            
+            toast.innerHTML = `
+                <i class="fa-solid fa-circle-check text-fk-yellow shrink-0 text-sm"></i>
+                <div class="font-medium">${message}</div>
+            `;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
