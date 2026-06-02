@@ -148,7 +148,6 @@
     <!-- Toast Notifications Container -->
     <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
 
-    <!-- Consolidated Search Console Row below Header -->
     <div class="w-full max-w-[1600px] mx-auto p-4 sm:p-6 pb-0">
         <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-2">
             <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider flex justify-between px-1">
@@ -182,7 +181,6 @@
         </div>
     </div>
 
-    <!-- Main Workspace Container -->
     <main class="flex-grow max-w-[1600px] w-full mx-auto p-4 sm:p-6 pt-4">
         <div id="main-grid-layout" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
@@ -214,7 +212,6 @@
 
             </aside>
 
-            <!-- LINKS LIST COLUMN: Right content grid -->
             <section id="content-panel" class="lg:col-span-9 xl:col-span-9 space-y-4">
                 
                 <!-- Dynamic status header -->
@@ -269,7 +266,6 @@
         </div>
     </main>
 
-    <!-- Edit Layout Dialog Modal -->
     <div id="layout-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 opacity-0 pointer-events-none modal-overlay">
         <div class="bg-white w-full max-w-md mx-4 rounded-xl border border-slate-200 shadow-2xl p-6 relative flex flex-col max-h-[90vh] overflow-y-auto">
             <button onclick="closeLayoutModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 transition-colors p-1">
@@ -369,7 +365,6 @@
         </div>
     </div>
 
-    <!-- Unified Add / Edit Link Modal -->
     <div id="add-link-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 opacity-0 pointer-events-none modal-overlay">
         <div class="bg-white w-full max-w-md mx-4 rounded-xl border border-slate-200 shadow-2xl p-6 relative flex flex-col max-h-[90vh] overflow-y-auto">
             <button onclick="closeAddModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 transition-colors p-1">
@@ -464,7 +459,6 @@
         </div>
     </div>
 
-    <!-- Cloud Sharing Confirmation Modal -->
     <div id="share-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 opacity-0 pointer-events-none modal-overlay">
         <div class="bg-white w-full max-w-lg mx-4 rounded-xl border border-slate-200 shadow-2xl p-6 relative flex flex-col">
             <button onclick="closeShareModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 transition-colors p-1">
@@ -519,7 +513,6 @@
         </div>
     </footer>
 
-    <!-- Helper function to sanitize any proxy/sandboxed duplicated URLs -->
     <script>
         function getCleanCurrentUrl() {
             let url = window.location.href;
@@ -588,7 +581,6 @@
         }
     </script>
 
-    <!-- Firebase Core and Firestore Imports -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -751,7 +743,7 @@
     </script>
 
     <script>
-        // Mapped Flipkart Support Resources dataset containing exactly the 21 links requested
+        // Mapped Flipkart Support Resources dataset containing exactly the 22 links requested
         const baseResources = [
             {
                 id: "tool-looker",
@@ -918,7 +910,7 @@
             {
                 id: "form-call-triaging",
                 title: "Call Triaging Data Intake",
-                url: "https://docs.google.com/forms/d/e/1FAIpQLSdNEw8n_z1yxt4fqebNBiGsZnrdqIZymorzrobpLcWLior0Ew/viewform?usp=send_form",
+                url: "https://docs.google.com/forms/d/e/1FAIpQLSfXSx71QufCpwYoA6PRIZB8aVNSnHQ01ahmQ_4tJWdLiB7QRQ/viewform?pli=1&pli=1",
                 category: "forms",
                 desc: "Registers call triaging data, routing parameters, and diagnostic profiles.",
                 internal: false,
@@ -941,6 +933,15 @@
                 desc: "Consolidated index reviewing physical packages officially logged as untraceable.",
                 internal: false,
                 tags: ["untraceable", "delivery", "lost", "shipment"]
+            },
+            {
+                id: "form-it-breakdown",
+                title: "IT Support Breakdown Tracker",
+                url: "https://docs.google.com/forms/d/e/1FAIpQLSdABSaTKojRfnJ3x2czJ44ewl4qLq5T-tYfDPZmDeamLI833A/viewform?pli=1&pli=1",
+                category: "forms",
+                desc: "Registers hardware, network, client application, and portal breakdowns with helpdesk.",
+                internal: false,
+                tags: ["it", "breakdown", "hardware", "portal", "system", "support"]
             }
         ];
 
@@ -970,7 +971,8 @@
             activeCategory: 'all',
             searchQuery: '',
             networkFilter: 'all', // all, internal, external
-            favorites: JSON.parse(localStorage.getItem('fk_favs_v4_light') || '["tool-smart-assist", "tool-ekart-console", "guide-brief-head", "tool-looker", "script-payu", "script-canc", "tool-kapture-chat", "tool-ct-selfserve", "script-asc", "sheet-realtime-hours"]'),
+            // Defaulting custom bookmarks to include requested links plus call triaging & IT support form
+            favorites: JSON.parse(localStorage.getItem('fk_favs_v4_light') || '["tool-smart-assist", "tool-ekart-console", "guide-brief-head", "tool-looker", "script-payu", "script-canc", "tool-kapture-chat", "tool-ct-selfserve", "script-asc", "sheet-realtime-hours", "form-call-triaging", "form-it-breakdown"]'),
             resources: [],
             layout: { ...defaultLayout }
         };
@@ -1227,7 +1229,9 @@
                 btns.external.className = "px-2 py-1 rounded text-emerald-700 font-bold bg-emerald-100 border border-emerald-200 shadow-sm flex items-center gap-1";
             }
         }
+    </script>
 
+    <script>
         function renderResourceCards() {
             const grid = document.getElementById('resource-grid');
             const emptyState = document.getElementById('empty-state');
