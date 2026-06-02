@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Utility Icons -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -174,9 +174,9 @@
             <!-- Quick Keyword Suggestions below Search Bar -->
             <div class="flex flex-wrap items-center gap-2 pt-2 text-xs text-slate-600 font-mono px-1">
                 <span class="text-slate-400 font-medium text-[11px]">Quick keywords:</span>
-                <button onclick="applySearchQuery('it breakdown')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-slate-300 rounded text-[11px] text-fk-blue font-medium transition-all">#IT Breakdown</button>
-                <button onclick="applySearchQuery('briefing')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-slate-300 rounded text-[11px] text-fk-blue font-medium transition-all">#Briefings</button>
-                <button onclick="applySearchQuery('black')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-slate-300 rounded text-[11px] text-fk-blue font-medium transition-all">#FK Black</button>
+                <button onclick="applySearchQuery('canc')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-slate-300 rounded text-[11px] text-fk-blue font-medium transition-all">#Canc Script</button>
+                <button onclick="applySearchQuery('briefing')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-slate-300 rounded text-[11px] text-fk-blue font-medium transition-all">#Briefing</button>
+                <button onclick="applySearchQuery('kapture')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-slate-300 rounded text-[11px] text-fk-blue font-medium transition-all">#Kapture Chat</button>
                 <button onclick="applySearchQuery('accops')" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 border border-slate-200 hover:border-slate-300 rounded text-[11px] text-fk-blue font-medium transition-all">#Accops VPN</button>
             </div>
         </div>
@@ -751,253 +751,86 @@
     </script>
 
     <script>
-        // Mapped Flipkart Support Resources dataset
+        // Mapped Flipkart Support Resources dataset containing exactly the 21 links requested
         const baseResources = [
-            // Category: Forms & Trackers
             {
-                id: "form-feedback",
-                title: "Agent Feedback Tracking Sheet",
-                url: "https://docs.google.com/spreadsheets/d/1JkXUMCmkfD1CYXaonwXFJS7V2evCYvUBNRgum8REYV0/edit?gid=540604563#gid=540604563",
-                category: "forms",
-                desc: "Active spreadsheet logging operational user feedbacks, issues, and customer complaints.",
-                internal: false,
-                tags: ["feedback", "sheet", "tracking", "log"]
-            },
-            {
-                id: "form-dip",
-                title: "DIP Checklist Verification Form",
-                url: "https://docs.google.com/forms/d/e/1FAIpQLSe_Gp1n-w6Q9q4LSc4esgA21lC9JUAQbzeVtMuFbcAvhTmlkA/viewform",
-                category: "forms",
-                desc: "Operational checkpoints checklist form submission.",
-                internal: false,
-                tags: ["dip", "check", "form", "compliance"]
+                id: "tool-looker",
+                title: "Looker Studio Dashboard (Loocker)",
+                url: "https://lookerstudio.google.com/reporting/6ff21288-94e6-4d84-b034-158bb7c1d1a2/page/page_12345",
+                category: "tools",
+                desc: "High-level visual reporting framework tracking active support logs and queue parameters.",
+                internal: true,
+                tags: ["looker", "loocker", "report", "dashboard"]
             },
             {
                 id: "form-agent-review",
                 title: "Agent Performance Review Form",
                 url: "https://docs.google.com/forms/d/e/1FAIpQLSc_cd6Se1yqirMWLvCrkxH7cr6mpCuukvIteLHLNWAOmvMokQ/viewform",
                 category: "forms",
-                desc: "Intake evaluation evaluation form for team managers and QA leaders.",
+                desc: "Quality audit and performance documentation submission form for ops managers.",
                 internal: false,
                 tags: ["review", "agent", "qa", "evaluation"]
             },
             {
-                id: "form-it-tracker",
-                title: "IT Ekart Tracker Form",
-                url: "https://docs.google.com/forms/d/e/1FAIpQLSfwBzNrmN8uZq2T0P6cygGb7R-_iGdNJOvPPpAT5_-LtnqqKA/viewform",
-                category: "forms",
-                desc: "EKart logistics related IT and hardware support ticket logs.",
-                internal: false,
-                tags: ["it", "ekart", "tracker", "support", "forms"]
-            },
-            {
-                id: "form-skill-booster",
-                title: "Skill Booster Diagnostic Form",
-                url: "https://docs.google.com/forms/d/e/1FAIpQLSeMiesF4KvYYIZKRt0UTuhH7xL_zgKhXG4SEn3D9xwwzJK68A/viewform?usp=dialog",
-                category: "forms",
-                desc: "Registration and diagnostic questionnaire form for support booster programs.",
-                internal: false,
-                tags: ["training", "skill", "booster", "course"]
-            },
-            {
-                id: "form-prob-escalation",
-                title: "Probable Escalation Logging Form",
-                url: "https://docs.google.com/forms/d/e/1FAIpQLSesUr0zhj7K68HTjr52pwtzb6nMosh1jhapMTzK2fk4ep7aQg/viewform",
-                category: "forms",
-                desc: "Urgent ticket routing form used to flag extreme complaints or risks.",
-                internal: false,
-                tags: ["escalation", "hazard", "complaints", "probable"]
-            },
-            {
-                id: "form-it-breakdown-1",
-                title: "IT Breakdown Tracker (Short Link)",
-                url: "https://forms.gle/PsgpvS9zTgVL7box7",
-                category: "forms",
-                desc: "Quick access link to register immediate computer, CRM, or portal breakdowns.",
-                internal: false,
-                tags: ["it", "breakdown", "crash", "bug"]
-            },
-            {
-                id: "form-it-breakdown-2",
-                title: "IT System Breakdown Tracker (Full Link)",
-                url: "https://docs.google.com/forms/d/e/1FAIpQLScmUcZ-fUzfYD44FqC3UhO_WGbTfZyYfOITup_qwCdL0Nt0ng/viewform?pli=1&pli=1",
-                category: "forms",
-                desc: "Full comprehensive form submission for infrastructure and hardware outages.",
-                internal: false,
-                tags: ["it", "breakdown", "hardware", "crash"]
-            },
-            {
-                id: "form-tagging-1",
-                title: "Manual Tagging Operational Form (Preview)",
-                url: "https://docs.google.com/forms/d/1vduWAgTUA73j58VTKXHBjFa1KHTSFvXXCl9V2u9e7ZA/preview",
-                category: "forms",
-                desc: "Preview template interface for manual order/shipment tags operations.",
-                internal: false,
-                tags: ["manual", "tagging", "ops", "preview"]
-            },
-            {
-                id: "form-tagging-2",
-                title: "Manual Tagging Action Form",
-                url: "https://docs.google.com/forms/d/1vduWAgTUA73j58VTKXHBjFa1KHTSFvXXCl9V2u9e7ZA/viewform?edit_requested=true&pli=1",
-                category: "forms",
-                desc: "Operational entry form to manually update metadata tags on system accounts.",
-                internal: false,
-                tags: ["manual", "tagging", "form", "write"]
-            },
-            {
-                id: "form-escalation-main",
-                title: "Operations Escalation Submission Form",
-                url: "https://docs.google.com/forms/d/e/1FAIpQLSeRrIist-kC3b-uaSUHszG120KjcnAaxf9gt7oNihXEiDRFXw/viewform?pli=1&pli=1",
-                category: "forms",
-                desc: "Primary operational hierarchy escalation pathway form.",
-                internal: false,
-                tags: ["escalation", "issue", "support", "main"]
-            },
-            {
-                id: "form-zt-ack",
-                title: "Zero Tolerance Form Acknowledgement",
-                url: "https://docs.google.com/forms/d/1ZMe5xCXr6ty7u2NBDSFCKMe3_en8NqslYb7Qo9EMzGo/viewform?edit_requested=true",
-                category: "forms",
-                desc: "Policy, safety, and agent compliance verification acknowledgment form.",
-                internal: false,
-                tags: ["compliance", "zero tolerance", "policy", "signoff"]
-            },
-            {
-                id: "form-call-triaging",
-                title: "Call Triaging Data Intake Form",
-                url: "https://docs.google.com/forms/d/e/1FAIpQLSdNEw8n_z1yxt4fqebNBiGsZnrdqIZymorzrobpLcWLior0Ew/viewform?usp=send_form",
-                category: "forms",
-                desc: "Captures and categorizes initial telephone diagnostic issues.",
-                internal: false,
-                tags: ["triaging", "call", "telephony", "intake"]
-            },
-            {
-                id: "form-it-feedback",
-                title: "IT Support General Intake Sheet",
-                url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdABSaTKojRfnJ3x2czJ44ewl4qLq5T-tYfDPZmDeamLI833A/formResponse",
-                category: "forms",
-                desc: "Database response interface for corporate desktop and network requests.",
-                internal: false,
-                tags: ["it", "helpdesk", "form", "response"]
-            },
-
-            // Category: Sheets & Data Lists
-            {
-                id: "sheet-iphone",
-                title: "iPhone 14 Stock Inventory Sheet",
-                url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR4yFt5fJVPoFDNdYUAtDwmoAkzBYZ1pgC6hRC_W7lbSQpXbSd5pKbUdXAGw24hJfM8ys6vzQutmmSK/pubhtml",
-                category: "sheets",
-                desc: "Real-time published inventory and stock deployment sheets for iPhone 14 allocations.",
-                internal: false,
-                tags: ["iphone", "stock", "catalog", "apple", "inventory"]
-            },
-            {
-                id: "sheet-icici-bin",
-                title: "ICICI Bin Reference Database",
-                url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSnObKJTqVy2ISSBD-HSJStSVXibff678yGNboubXIIzuFdadX6JrCpDzqyTWWfzg/pubhtml",
-                category: "sheets",
-                desc: "Master directory detailing all valid ICICI credit and debit card BIN ranges.",
-                internal: false,
-                tags: ["icici", "bin", "cards", "bank"]
-            },
-            {
-                id: "sheet-axis-bin",
-                title: "Axis Bank BIN Reference Database",
-                url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSpxh8FLD5QKFajWdbtxsce5EXAr1hSV-IYTs17H-d2ODTSgXDTkLrSjarxVSFzg67KuvrulUJJ0f9G/pubhtml",
-                category: "sheets",
-                desc: "Master reference list detailing Axis card BIN parameters.",
-                internal: false,
-                tags: ["axis", "bin", "cards", "bank"]
-            },
-            {
-                id: "sheet-hdfc-bin",
-                title: "HDFC BIN Reference Database",
-                url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQYp_P6SK7bikHn-qVtK4SDD8VUqpUFj_iQauOJqHoR8XMlzDkVuZlsnwCmIPWlVPwYF9IZ-UBH04D1/pubhtml",
-                category: "sheets",
-                desc: "Master data directory for identifying HDFC card ranges.",
-                internal: false,
-                tags: ["hdfc", "bin", "cards", "bank"]
-            },
-            {
-                id: "sheet-realtime-hours",
-                title: "Real-time Login Hours & AHT Tracker",
-                url: "https://docs.google.com/spreadsheets/d/1UcRmAbHGl7NKjMWWIESmfDv2BPWPSaL8gg-EpHYjEoc/edit?gid=0#gid=0",
-                category: "sheets",
-                desc: "Live document tracking log hours, team performance metrics, and shifts stats.",
-                internal: false,
-                tags: ["aht", "login", "metrics", "hours", "shift"]
-            },
-            {
-                id: "sheet-untraceable-marked",
-                title: "Untraceable Deliveries Master Log",
-                url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSuoZzT1QTiArcuFC9P2tbIkDe4JIKDvE_aIGlcXYw8zKJB3sZA-pUSe9WZcRawvNlzZZVBSqeHMc7s/pubhtml",
-                category: "sheets",
-                desc: "Consolidated index of shipments officially marked untraceable by delivery fleets.",
-                internal: false,
-                tags: ["untraceable", "delivery", "lost", "shipment"]
-            },
-            {
-                id: "sheet-deepak-sir",
-                title: "Management KPI Dashboard (Deepak Sir)",
-                url: "https://docs.google.com/spreadsheets/d/1ZYRi3zd5ovYNGmM5xqTb7mjZ2s6BlnfgUu1eG39Jl38/edit?gid=1522254193#gid=1522254193",
-                category: "sheets",
-                desc: "Consolidated site execution dashboard monitoring productivity and operations KPIs.",
-                internal: false,
-                tags: ["deepak", "management", "kpi", "lead"]
-            },
-            {
-                id: "sheet-dip-check",
-                title: "DIP Compliance Audit Log Sheet",
-                url: "https://docs.google.com/spreadsheets/d/1UkdM9-Aw6gcSf6P775VtYVS4I5Ct0cPh6m6zAze6VBs/edit?gid=187099888#gid=187099888",
-                category: "sheets",
-                desc: "Auditing log repository monitoring DIP verification checks.",
-                internal: false,
-                tags: ["dip", "compliance", "audit", "sheet"]
-            },
-
-            // Category: Internal Tools & Portals
-            {
-                id: "tool-looker",
-                title: "Looker Studio Ops Performance Reporting",
-                url: "https://lookerstudio.google.com/reporting/6ff21288-94e6-4d84-b034-158bb7c1d1a2/page/page_12345",
-                category: "tools",
-                desc: "High-level Looker dashboards tracing SLAs, queue statuses, and ticket resolutions.",
+                id: "script-payu",
+                title: "PayU Transaction Resolver Script",
+                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbxMRt8UXa14zKGkLehxj3EiYl626UGRvP295z3k5uNg6M4i0VnywFExBIN-agV1-FvrAQ/exec?pli=1",
+                category: "automation",
+                desc: "Automated resolver verifying transaction statuses on PayU checkout paths.",
                 internal: true,
-                tags: ["looker", "report", "analytics", "dashboard"]
+                tags: ["payu", "script", "payment", "reconcile"]
             },
             {
-                id: "tool-recharge-portal",
-                title: "Flipkart Recharge Transaction Portal",
-                url: "https://sites.google.com/flipkart.com/recharge-transaction-portal/recharge-transaction",
-                category: "tools",
-                desc: "Corporate portal providing lookup procedures for cellular/utility recharge failures.",
+                id: "script-canc",
+                title: "Order Cancellation Handler (Canc)",
+                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbwa8V8pP_GVBJb5zVDLgZ8oSE0FeNAeR4A0czkKQ6_slTIAYE5-lH30P9u4Wu92QZo0/exec?pli=1",
+                category: "automation",
+                desc: "Automated script addressing exceptions and forced cancellations on the system.",
                 internal: true,
-                tags: ["recharge", "transaction", "portal", "sites"]
+                tags: ["canc", "cancellation", "order", "reversal"]
+            },
+            {
+                id: "guide-brief-head",
+                title: "Campaign Briefing Guidelines",
+                url: "https://docs.google.com/document/d/158Wz3jOJ124u68v4NP0S_ba6eCdwos5Uu8OhUuDtBeI/edit?tab=t.j5e4w8jjmsxf#heading=h.tzm0z4i02hib",
+                category: "guides",
+                desc: "Instructional guide for campaign guidelines, target SLA, and communication templates.",
+                internal: false,
+                tags: ["briefing", "guidelines", "campaign", "process"]
+            },
+            {
+                id: "guide-notes",
+                title: "Manual Reference Process Notes",
+                url: "https://docs.google.com/document/d/1s9tYA7cnmZ8XzcO7Jb-jf1LcuSb_ivbnraRDxHhES3o/edit?tab=t.0#heading=h.cyhenhfg35j2",
+                category: "guides",
+                desc: "Comprehensive manual containing resolution logic, processes, and shift parameters.",
+                internal: false,
+                tags: ["notes", "manual", "troubleshooting", "reference"]
             },
             {
                 id: "tool-smart-assist",
                 title: "Flipkart Smart Assist System",
                 url: "http://smartassist.flipkart.net/flipkart/#/",
                 category: "tools",
-                desc: "Standard internal CRM mapping troubleshooting workflows and scripts.",
+                desc: "Standard internal CRM utility mapping troubleshooting scripts and customer profiles.",
                 internal: true,
-                tags: ["smart", "assist", "crm", "workflow"]
+                tags: ["smart", "assist", "crm", "customer"]
             },
             {
                 id: "tool-password-reset",
                 title: "FK Passit LDAP System",
                 url: "https://passit.fkinternal.com/#/",
                 category: "tools",
-                desc: "Self-service engine allowing quick reset/updating of Active Directory credentials.",
+                desc: "Self-service LDAP driver portal allowing quick updating of active directory credentials.",
                 internal: true,
-                tags: ["password", "ldap", "passit", "credentials"]
+                tags: ["password", "reset", "ldap", "passit"]
             },
             {
                 id: "tool-ekart-console",
                 title: "EKart Logistics Operations Console",
                 url: "http://10.24.1.71/hub-ops/tracking/shipments",
                 category: "tools",
-                desc: "Local server utility to audit status, runsheets, and physical hubs for shipments.",
+                desc: "Local tracking server dashboard managing physically processed hub dispatches.",
                 internal: true,
                 tags: ["ekart", "console", "tracking", "local"]
             },
@@ -1015,16 +848,25 @@
                 title: "CT Kapture Customer Service CRM",
                 url: "https://selfserveapp.kapturecrm.com/support-portals/fp-smart-assist/",
                 category: "tools",
-                desc: "Specific support portal linked with Flipkart Smart Assist accounts.",
+                desc: "Associated customer service self-serve portal for Smart Assist operations.",
                 internal: true,
                 tags: ["crm", "kapture", "ct", "selfserve"]
+            },
+            {
+                id: "script-microsite",
+                title: "Micro Site Transaction Handler",
+                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbxMRt8UXa14zKGkLehxj3EiYl626UGRvP295z3k5uNg6M4i0VnywFExBIN-agV1-FvrAQ/exec",
+                category: "automation",
+                desc: "Google Apps Script verifying micro-site payment ledgers.",
+                internal: true,
+                tags: ["microsite", "payment", "script", "verification"]
             },
             {
                 id: "tool-convin",
                 title: "Convin.AI Telephony Sign-In",
                 url: "https://flipkart.convin.ai/signin",
                 category: "tools",
-                desc: "AI-driven call monitoring software assessing quality scores and compliance.",
+                desc: "AI monitoring platform reviewing telephony metrics and conversation grades.",
                 internal: true,
                 tags: ["convin", "audio", "monitoring", "telephony"]
             },
@@ -1033,193 +875,72 @@
                 title: "Audit Xpert QA Console",
                 url: "http://auditxpert.fkinternal.com/",
                 category: "tools",
-                desc: "Auditing engine assessing team logs, notes and transactions.",
+                desc: "Operational QA portal auditing and monitoring quality benchmarks.",
                 internal: true,
                 tags: ["audit", "qa", "xpert", "quality"]
             },
             {
-                id: "tool-ldap-reset",
-                title: "LDAP Password Recovery (Authn)",
-                url: "https://authn.flipkart.net/forgot-pwd",
-                category: "tools",
-                desc: "Corporate password recovery pathway.",
+                id: "script-multi-return",
+                title: "Multiple Return Reason Script",
+                url: "https://script.google.com/a/flipkart.com/macros/s/AKfycbyQhf4YHvqkYO775VbwY0-1jR4Dc6suSeEKgYLGv6xV-OX5ljw_WixOG7tCsccT0L0pBQ/exec",
+                category: "automation",
+                desc: "Reverse logistics processing handler for multi-item return claims.",
                 internal: true,
-                tags: ["ldap", "authn", "credentials", "recovery"]
+                tags: ["returns", "script", "reverse", "claims"]
             },
             {
-                id: "tool-one-stop",
-                title: "One Stop Performance View Site",
-                url: "https://sites.google.com/partner.flipkart.com/one-stop-view/home",
-                category: "tools",
-                desc: "Integrated dashboard mapping overall partner metrics and target levels.",
+                id: "script-asc",
+                title: "ASC Warranty Diagnostic Script",
+                url: "https://script.google.com/a/flipkart.com/macros/s/AKfycbwKfqiZG6ZL-UUbPtZkaN9qerV-Lmn2ByXup4vnTf81_c8ayqVxkkSu-f2uFH4Xh7Rw/exec",
+                category: "automation",
+                desc: "Assesses warranty conditions and tracks nearby authorized service locations.",
                 internal: true,
-                tags: ["one stop", "performance", "partner", "view"]
+                tags: ["asc", "warranty", "centers", "diagnostics"]
             },
             {
-                id: "tool-accops",
-                title: "Accops Workspace Driver Gateway",
-                url: "https://propalmsnetwork-my.sharepoint.com/:u:/g/personal/ayaz_dhala_accops_com/EbWQ1rsVA5ZKgas5qcWXHywBQwczl6KoJgmmkRkBUAVOTw?e=YApLBF",
-                category: "tools",
-                desc: "Direct corporate Sharepoint portal link to download secure network connectivity drivers.",
-                internal: true,
-                tags: ["accops", "vpn", "gateway", "driver", "avaya"]
+                id: "sheet-realtime-hours",
+                title: "Real-time Login Hours & AHT Tracker",
+                url: "https://docs.google.com/spreadsheets/d/1UcRmAbHGl7NKjMWWIESmfDv2BPWPSaL8gg-EpHYjEoc/edit?gid=0#gid=0",
+                category: "sheets",
+                desc: "Main tracking sheet reviewing login hours, activity status, and average handling times.",
+                internal: false,
+                tags: ["aht", "login", "metrics", "hours", "tracker"]
             },
             {
-                id: "tool-accops-address",
-                title: "Accops Domain Connection IP",
-                url: "https://cxconnect1.fkinternal.com",
-                category: "tools",
-                desc: "Domain link for Accops client configuration: cxconnect1.fkinternal.com.",
+                id: "script-multi-run",
+                title: "Single Run & Multi-Run Visibility",
+                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbxLTsVHmE7a8vN2WOszCBw_7Otp5iSLwxCqhfCqvARv1mXau3NApXefVM93NEVNvgOs2A/exec",
+                category: "automation",
+                desc: "Detailed lookup engine auditing dispatch parameters and daily run-sheet details.",
                 internal: true,
-                tags: ["accops", "gateway", "ip", "address"]
+                tags: ["runsheet", "dispatch", "visibility", "multi-run"]
             },
             {
-                id: "tool-avaya-cert",
-                title: "Avaya Certificate Google Drive Folder",
-                url: "https://drive.google.com/drive/folders/1MTwIqjPGGyLfxu3og5Xlb7mZ27SeZwFk",
-                category: "tools",
-                desc: "Security authentication folder containing credentials files for softphone profiles.",
-                internal: true,
-                tags: ["avaya", "telephony", "certificates", "drive"]
+                id: "form-call-triaging",
+                title: "Call Triaging Data Intake",
+                url: "https://docs.google.com/forms/d/e/1FAIpQLSdNEw8n_z1yxt4fqebNBiGsZnrdqIZymorzrobpLcWLior0Ew/viewform?usp=send_form",
+                category: "forms",
+                desc: "Registers call triaging data, routing parameters, and diagnostic profiles.",
+                internal: false,
+                tags: ["triaging", "call", "telephony", "routing"]
             },
             {
                 id: "tool-de-details",
                 title: "Delivery Executive (DE) Directory Site",
                 url: "https://sites.google.com/flipkart.com/dedetails/home",
                 category: "tools",
-                desc: "Rider directory tracking contact information, hub bases, and logistics lines.",
+                desc: "Portal providing contact and operational details for courier field personnel.",
                 internal: true,
                 tags: ["de", "rider", "delivery", "details"]
             },
-
-            // Category: Scripts & Automation
             {
-                id: "script-payu",
-                title: "PayU Transaction Resolver Script",
-                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbxMRt8UXa14zKGkLehxj3EiYl626UGRvP295z3k5uNg6M4i0VnywFExBIN-agV1-FvrAQ/exec?pli=1",
-                category: "automation",
-                desc: "Google Apps Script checking payment status on PayU integrations.",
-                internal: true,
-                tags: ["payu", "script", "payment", "automation", "macros"]
-            },
-            {
-                id: "script-microsite",
-                title: "Micro Site Transaction Handler Script",
-                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbxMRt8UXa14zKGkLehxj3EiYl626UGRvP295z3k5uNg6M4i0VnywFExBIN-agV1-FvrAQ/exec",
-                category: "automation",
-                desc: "Operational macro handler verifying system micro-site ledger records.",
-                internal: true,
-                tags: ["microsite", "payment", "script", "apps script"]
-            },
-            {
-                id: "script-canc",
-                title: "Order Cancellation Action Script",
-                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbwa8V8pP_GVBJb5zVDLgZ8oSE0FeNAeR4A0czkKQ6_slTIAYE5-lH30P9u4Wu92QZo0/exec?pli=1",
-                category: "automation",
-                desc: "Automated status override script resolving stubborn cancellations.",
-                internal: true,
-                tags: ["cancellation", "order", "reversal", "canc", "override"]
-            },
-            {
-                id: "script-cnac",
-                title: "CNAC Compensation Form Script",
-                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbwa8V8pP_GVBJb5zVDLgZ8oSE0FeNAeR4A0czkKQ6_slTIAYE5-lH30P9u4Wu92QZo0/exec",
-                category: "automation",
-                desc: "Apps Script processing compensatory payments for failed delivery SLAs.",
-                internal: true,
-                tags: ["cnac", "compensation", "approval", "script"]
-            },
-            {
-                id: "script-multi-return",
-                title: "Multiple Return Reason Core Script",
-                url: "https://script.google.com/a/flipkart.com/macros/s/AKfycbyQhf4YHvqkYO775VbwY0-1jR4Dc6suSeEKgYLGv6xV-OX5ljw_WixOG7tCsccT0L0pBQ/exec",
-                category: "automation",
-                desc: "Resolves reverse logistics issues on multi-item returns.",
-                internal: true,
-                tags: ["returns", "script", "reverse", "multi-return"]
-            },
-            {
-                id: "script-asc",
-                title: "Authorized Service Center (ASC) Diagnostic Script",
-                url: "https://script.google.com/a/flipkart.com/macros/s/AKfycbwKfqiZG6ZL-UUbPtZkaN9qerV-Lmn2ByXup4vnTf81_c8ayqVxkkSu-f2uFH4Xh7Rw/exec",
-                category: "automation",
-                desc: "Instantly checks warranty conditions and maps nearby certified repair hubs.",
-                internal: true,
-                tags: ["asc", "warranty", "centers", "support"]
-            },
-            {
-                id: "script-multi-run",
-                title: "Multi-Run Dispatch Visibility Portal",
-                url: "https://script.google.com/a/macros/partner.flipkart.com/s/AKfycbxLTsVHmE7a8vN2WOszCBw_7Otp5iSLwxCqhfCqvARv1mXau3NApXefVM93NEVNvgOs2A/exec",
-                category: "automation",
-                desc: "Detailed lookup system auditing daily delivery dispatch run-sheets.",
-                internal: true,
-                tags: ["runsheet", "dispatch", "multi-run", "single run"]
-            },
-            {
-                id: "script-delay-pickup",
-                title: "Delay in Pickup Hub Monitor",
-                url: "https://script.google.com/a/partner.flipkart.com/macros/s/AKfycbyEF-p-DYd_l4jAdcGG28kJTNdwPq8QlPzTQ2iJrAk8AXKJaglIPnuTmlORbxgZq8WuEw/exec",
-                category: "automation",
-                desc: "Monitors warehouse delay logs and handles pickup hub failures.",
-                internal: true,
-                tags: ["delay", "pickup", "hub", "lag"]
-            },
-
-            // Category: Guides & FAQs
-            {
-                id: "guide-black-doc",
-                title: "Flipkart Black Membership FAQ Doc",
-                url: "https://docs.google.com/document/e/2PACX-1vRYmxbNewfeNQb9IaRClnSvplumqi9FYetNSRlmBduMmV80G9xUzH4S-gz0FVjuG1fBEXuAHTUFsrkI/pub",
-                category: "guides",
-                desc: "Published handbook specifying rules and escalation metrics for FK Black accounts.",
+                id: "sheet-untraceable-marked",
+                title: "Untraceable Deliveries Master Log",
+                url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSuoZzT1QTiArcuFC9P2tbIkDe4JIKDvE_aIGlcXYw8zKJB3sZA-pUSe9WZcRawvNlzZZVBSqeHMc7s/pubhtml",
+                category: "sheets",
+                desc: "Consolidated index reviewing physical packages officially logged as untraceable.",
                 internal: false,
-                tags: ["black", "faq", "membership", "club"]
-            },
-            {
-                id: "guide-black-site",
-                title: "Flipkart Black Official Site Guide",
-                url: "https://www.flipkart.com/pages/fk-black-faq",
-                category: "guides",
-                desc: "Public-facing FAQ explaining VIP benefits, rewards and privileges.",
-                internal: false,
-                tags: ["black", "site", "landing", "premium"]
-            },
-            {
-                id: "guide-brief-head",
-                title: "Campaign Briefing Master Guidelines",
-                url: "https://docs.google.com/document/d/158Wz3jOJ124u68v4NP0S_ba6eCdwos5Uu8OhUuDtBeI/edit?tab=t.j5e4w8jjmsxf#heading=h.tzm0z4i02hib",
-                category: "guides",
-                desc: "Operational briefing outlining target support metrics and guidelines.",
-                internal: false,
-                tags: ["briefing", "campaign", "guidelines", "head"]
-            },
-            {
-                id: "guide-brief-doc",
-                title: "Operations Briefing Document",
-                url: "https://docs.google.com/document/d/158Wz3jOJ124u68v4NP0S_ba6eCdwos5Uu8OhUuDtBeI/edit?tab=t.0",
-                category: "guides",
-                desc: "Operational handbook detailing shift rules and current campaign criteria.",
-                internal: false,
-                tags: ["briefing", "operations", "shift", "doc"]
-            },
-            {
-                id: "guide-notes",
-                title: "Manual Reference Process Notes",
-                url: "https://docs.google.com/document/d/1s9tYA7cnmZ8XzcO7Jb-jf1LcuSb_ivbnraRDxHhES3o/edit?tab=t.0#heading=h.cyhenhfg35j2",
-                category: "guides",
-                desc: "Reference manual containing step-by-step resolution pathways.",
-                internal: false,
-                tags: ["notes", "manual", "troubleshooting", "resolution"]
-            },
-            {
-                id: "guide-bbd",
-                title: "BBD Sales Campaign Training Slides",
-                url: "https://docs.google.com/presentation/d/1Z2jMDoDlQNLTZRuWqhm7svDvR1YUduvXpvY2RoOnUrk/preview?slide=id.g3824ba88fc5_463_0",
-                category: "guides",
-                desc: "Visual training presentation for Big Billion Days campaign protocols.",
-                internal: false,
-                tags: ["bbd", "slides", "sale", "billion"]
+                tags: ["untraceable", "delivery", "lost", "shipment"]
             }
         ];
 
@@ -1249,7 +970,7 @@
             activeCategory: 'all',
             searchQuery: '',
             networkFilter: 'all', // all, internal, external
-            favorites: JSON.parse(localStorage.getItem('fk_favs_v4_light') || '[]'),
+            favorites: JSON.parse(localStorage.getItem('fk_favs_v4_light') || '["tool-smart-assist", "tool-ekart-console", "guide-brief-head", "tool-looker", "script-payu", "script-canc", "tool-kapture-chat", "tool-ct-selfserve", "script-asc", "sheet-realtime-hours"]'),
             resources: [],
             layout: { ...defaultLayout }
         };
